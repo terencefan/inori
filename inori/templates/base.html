@@ -1,58 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
     <head>
         <title>{% block title %}{% endblock %}</title>
-        <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/static/bootstrap-switch/stylesheets/bootstrap-switch.css" rel="stylesheet">
-        <link rel="stylesheet/less" type="text/css" href="/static/less/main.less">
+
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
+
         {% block css %}{% endblock %}
+
+        <link rel="stylesheet/less" type="text/css" href="/static/less/main.less">
+
         <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-        <script src="http://libs.baidu.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
         <script src="http://libs.baidu.com/lesscss/1.3.0/less.min.js"></script>
-        <script src="/static/bootstrap-switch/js/bootstrap-switch.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div class="navbar navbar-inverse">
-            <div class="navbar-inner">
-                <a class="brand" href="/index">小祈和小翼的储藏室</a>
-                <ul class="nav">
-                    <li {% block index_active %}{% endblock %}><a href="/index">主页</a></li>
-                    <li><a data-toggle="modal" data-target="#wow" href="#">决战奥格瑞玛</a></li>
-                    <li><a data-toggle="modal" data-target="#anime" href="#">二次元狂热</a></li>
-                </ul>
-                {% if 0 %}
-                <ul class="nav pull-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            {{ user.username }}
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Edit Profile</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/account/logout">Sign Out</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                {% else %}
-                <ul class="nav pull-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            用户中心
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a data-toggle="modal" data-target="#signUp" href="#">注册</a></li>
-                            <li><a data-toggle="modal" data-target="#signIn" href="#">登陆</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                {% endif %}
-                <form class="navbar-search pull-right">
-                    <input type="text" class="search-query" placeholder="搜索">
-                </form>
+        <nav class="navbar navbar-default" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">小祈和小翼的储藏室</a>
             </div>
-        </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">主页</a></li>
+                    <li><a href="#">决战奥格瑞玛</a></li>
+                    <li><a href="#">二次元狂热</a></li>
+                </ul>
+
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">用户中心<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">登陆</a></li>
+                            <li><a href="#">注册</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </nav>
+
+        {% block jumbotran %}
+        {% endblock %}
 
         {% block bc_0 %}
         <div class="container">
@@ -60,21 +63,20 @@
                 <li><a href="/index">Index</a><span class="divider">/</span></li>
                 {% block bc_1 %}{% endblock %}
             </ul>
+
+            <div class="row">
+                <div class="col-md-4">
+                    {% block sidebar %}<h2>Sidebar</h2>{% endblock %}
+                </div>
+                <div class="col-md-8">
+                    {% block content %}<h2>Content</h2>{% endblock %}
+                </div>
+            </div>
+
         </div>
         {% endblock %}
 
         {% block top %}{% endblock %}
-
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span4">
-                    {% block sidebar %}{% endblock %}
-                </div>
-                <div class="span8">
-                    {% block content %}{% endblock %}
-                </div>
-            </div>
-        </div>
 
         <div id="signUp" class="modal hide fade" tabindex="-1" role="dialog">
             <div class="modal-header">
@@ -101,17 +103,17 @@
             </div>
             <div class="modal-body">
                 <p class="text-success">
-                    如果您对魔兽世界没有任何兴趣的话，你将不会对接下来的内容产生任何兴趣
+                    如果您对魔兽世界没有兴趣的话，您将不会对接下来的内容产生任何兴趣
                 </p>
                 <p class="text-warning">
-                    如果您不在一区斯坦索姆服务器，接下来的内容您可能会产生困惑
+                    如果您不玩魔兽世界或是新手玩家，接下来的内容可能会使您感到困惑
                 </p>
                 <p class="text-error">
                     如果您是部落玩家，接下来的内容可能会使您感到不适
                 </p>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn btn-primary">关闭</a>
+                <a href="#" class="btn btn-primary" data-dismiss="modal">关闭</a>
                 <a href="#" class="btn btn-warning">仍然继续</a>
             </div>
         </div>
