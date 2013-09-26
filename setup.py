@@ -15,5 +15,6 @@ setup(
     pacakage_data={},
     install_requires=[
         "flask>=0.10.1",
+        "sqlalchemy>=0.8.0",
     ]
 )
