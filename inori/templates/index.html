@@ -21,6 +21,14 @@
 
 {% block sidebar %}
 <div class="well">
+    <img src="/static/avatar.jpg" class="img-rounded img-responsive">
+    <h3>风之小祈</h3>
+    <address>
+        <strong>Eleme, Inc.</strong><br>
+        <abbr title="Phone">15216709049</abbr><br>
+        <a href="mailto:stdrickforce@gmail.com">stdrickforce@gmail.com</a>
+</div>
+<div class="well">
     <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="#">全部动态</a></li>
         <li><a href="#">状态</a></li>
@@ -31,12 +39,42 @@
 {% endblock %}
 
 {% block content %}
+{% if session.logged_in and session.user.is_super_admin %}
+<form class="form-horizontal" role="form" action="{{ url_for('add_tweet') }}" method="post">
+    <div class="form-group">
+        <div class="col-sm-10">
+            <textarea class="form-control" name="content" rows="3">说点什么吧...</textarea>
+        </div>
+        <div class="col-sm-2">
+            <button type="submit" class="btn btn-primary">发布</button>
+        </div>
+    </div>
+</form>
+{% endif %}
 {% for tweet in var.tweets %}
-<div style="padding-bottom:10px" class="well">
-    <blockquote>
-        <p>{{ tweet.content }}</p>
-        <small class="pull-right">{{ tweet.created_at }}</small>
-    </blockquote>
+<div>
+    {% if tweet.user_id == 1 %}
+    <div class="row">
+        <div class="col-md-2">
+            <img src="/static/avatar.jpg" class="img-rounded img-responsive">
+        </div>
+        <div class="col-md-10 well">
+            <p>{{ tweet.content }}</p>
+            <div class="text-muted pull-right">{{ tweet.created_at }}</div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-md-2 col-md-push-10">
+            <img src="/static/avatar.jpg" class="img-rounded img-responsive">
+        </div>
+        <div class="col-md-10 col-md-pull-2 well">
+            <p>{{ tweet.content }}</p>
+            <div class="text-muted pull-right">{{ tweet.created_at }}</div>
+        </div>
+    </div>
+    {% endif %}
+    <!--
     <div class="btn-group btn-group-xs pull-right">
         <button type="button" class="btn btn-info">赞！</button>
         <div class="btn-group btn-group-xs">
@@ -49,6 +87,7 @@
             </ul>
         </div>
     </div>
+    -->
 </div>
 {% endfor %}
 {% endblock %}
