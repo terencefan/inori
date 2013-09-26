@@ -8,10 +8,41 @@
     <div class="jumbotron">
         <h1>JJ必须死</h1>
         <p>这是一个专门用来黑JJ的网站，看起来已经初具规模了</p>
-        <p><a class="btn btn-primary btn-lg" role="button">了解更多（但是暂时你不能了解）</a></p>
+        <p><a class="btn btn-primary btn-lg" role="button">了解更多（但是暂时你还不能了解）</a></p>
     </div>
 {% endblock %}
 
 {% block index_active %}
     class = "active"
+{% endblock %}
+
+{% block bc_0 %}
+{% endblock %}
+
+{% block sidebar %}
+    <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#">全部动态</a></li>
+        <li><a href="#">状态</a></li>
+        <li><a href="#">博文</a></li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <div class="alert alert-success">
+            123
+        </div>
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-info">赞！</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    转发 <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">人人</a></li>
+                    <li><a href="#">新浪微博</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 {% endblock %}

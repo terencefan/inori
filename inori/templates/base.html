@@ -57,12 +57,13 @@
         {% block jumbotran %}
         {% endblock %}
 
-        {% block bc_0 %}
         <div class="container">
+            {% block bc_0 %}
             <ul class="breadcrumb">
                 <li><a href="/index">Index</a><span class="divider">/</span></li>
                 {% block bc_1 %}{% endblock %}
             </ul>
+            {% endblock %}
 
             <div class="row">
                 <div class="col-md-4">
@@ -74,7 +75,6 @@
             </div>
 
         </div>
-        {% endblock %}
 
         {% block top %}{% endblock %}
 
