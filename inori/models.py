@@ -36,7 +36,13 @@ class User(DeclarativeBase):
         self.nickname = nickname
 
 
+class Tweet(DeclarativeBase):
+    __tablename__ = 'tweet'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, default=0)
+    content = Column(String(200), default=u"")
+
+
 if __name__ == '__main__':
-    # DeclarativeBase.metadata.create_all(engine)
-    q = DBSession().query(User).get(1)
-    print q
+    DeclarativeBase.metadata.create_all(engine)
