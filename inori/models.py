@@ -10,6 +10,7 @@ engine = create_engine(master_url)
 from sqlalchemy import (
     Boolean,
     Column,
+    DateTime,
     Integer,
     String,
 )
@@ -42,6 +43,11 @@ class Tweet(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, default=0)
     content = Column(String(200), default=u"")
+    created_at = Column(DateTime)
+
+    def __init__(self, user_id, content):
+        self.user_id = user_id
+        self.content = content
 
 
 if __name__ == '__main__':

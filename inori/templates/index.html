@@ -20,30 +20,36 @@
 {% endblock %}
 
 {% block sidebar %}
+<div class="well">
     <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="#">全部动态</a></li>
         <li><a href="#">状态</a></li>
         <li><a href="#">博文</a></li>
         <li><a href="#">dkp</a></li>
     </ul>
+</div>
 {% endblock %}
 
 {% block content %}
-    <div>
-        <div class="alert alert-success">
-            123
-        </div>
-        <div class="btn-group pull-right">
-            <button type="button" class="btn btn-info">赞！</button>
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    转发 <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">人人</a></li>
-                    <li><a href="#">新浪微博</a></li>
-                </ul>
-            </div>
+{% for tweet in var.tweets %}
+<div style="padding-bottom:10px" class="well">
+    <blockquote>
+        <p>{{ tweet.content }}</p>
+        <small class="pull-right">{{ tweet.created_at }}</small>
+    </blockquote>
+    <div class="btn-group btn-group-xs pull-right">
+        <button type="button" class="btn btn-info">赞！</button>
+        <div class="btn-group btn-group-xs">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                转发 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">人人</a></li>
+                <li><a href="#">新浪微博</a></li>
+            </ul>
         </div>
     </div>
+</div>
+{% endfor %}
 {% endblock %}
+
