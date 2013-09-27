@@ -49,11 +49,11 @@ ul.messenger.messenger-fixed .message .messenger-actions {
 }
 /* line 42, ../../src/sass/messenger.sass */
 ul.messenger.messenger-fixed.messenger-on-top {
-  top: 70px;
+  top: 20px;
 }
 /* line 45, ../../src/sass/messenger.sass */
 ul.messenger.messenger-fixed.messenger-on-bottom {
-  bottom: 20px;
+  bottom: 70px;
 }
 /* line 48, ../../src/sass/messenger.sass */
 ul.messenger.messenger-fixed.messenger-on-top, ul.messenger.messenger-fixed.messenger-on-bottom {
