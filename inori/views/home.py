@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from flask import Module
+from flask import Module, Markup
 home = Module(__name__)
 
 from flask import (
@@ -34,6 +34,24 @@ def index():
     return render_template('home/index.html', var=var)
 
 
+@home.route('/tweet')
+def tweet():
+    dbsession = DBSession()
+    tweets = dbsession.query(Tweet).\
+        order_by(Tweet.created_at.desc())
+
+    var = {
+        'tweets': tweets,
+    }
+
+    return render_template('home/tweet.html', var=var)
+
+
+@home.route('/blog')
+def blog():
+    return render_template('home/blog.html')
+
+
 @home.route('/add_tweet', methods=['GET', 'POST'])
 def add_tweet():
     user_id = session['user']['id']
@@ -49,7 +67,7 @@ def add_tweet():
     dbsession.add(tweet)
     dbsession.commit()
 
-    return redirect(url_for('index'))
+    return redirect(url_for('tweet'))
 
 
 @home.route('/signin', methods=['GET', 'POST'])

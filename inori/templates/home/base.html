@@ -1,0 +1,42 @@
+{% extends "/base.html" %}
+
+{% block title %}
+    小祈和小翼的储藏室
+{% endblock %}
+
+{% block javascript %}
+var home_active = "{% block home_active %}home_index{% endblock %}";
+$("#" + home_active).addClass("active");
+{% endblock %}
+
+{% block jumbotran %}
+<!--
+    <div class="jumbotron">
+        <h1>白兔糖</h1>
+        <p>小祈会拯救大家的！</p>
+        <p><a class="btn btn-primary btn-lg" role="button">了解更多（但不是现在）</a></p>
+    </div>
+-->
+{% endblock %}
+
+{% block index_active %}
+    class = "active"
+{% endblock %}
+
+{% block sidebar %}
+<div class="well">
+    <img src="/static/avatar.jpg" class="img-rounded img-responsive">
+    <h3>风之小祈</h3>
+    <address>
+        <strong>Eleme, Inc.</strong><br>
+        <abbr title="Phone">15216709049</abbr><br>
+        <a href="mailto:stdrickforce@gmail.com">stdrickforce@gmail.com</a>
+</div>
+<div class="well">
+    <ul class="nav nav-pills nav-stacked">
+        <li id="home_index"><a href="{{ url_for('home.index') }}">全部动态</a></li>
+        <li id="home_tweet"><a href="{{ url_for('home.tweet') }}">状态</a></li>
+        <li id="home_blog"><a href="{{ url_for('home.blog') }}">博文</a></li>
+    </ul>
+</div>
+{% endblock %}

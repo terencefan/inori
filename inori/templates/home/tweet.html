@@ -1,0 +1,53 @@
+{% extends "/home/base.html" %}
+
+{% block home_active %}home_tweet{% endblock %}
+
+{% block content %}
+{% if session.logged_in and session.user.is_super_admin %}
+<form class="form-horizontal" role="form" action="{{ url_for('add_tweet') }}" method="post">
+    <div class="form-group">
+        <div class="col-xs-10">
+            <textarea class="form-control" name="content">说点什么吧...</textarea>
+            <script type="text/javascript">
+                CKEDITOR.replace('content',{
+                toolbar: [
+                    ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'FontSize', '-', 'Link', 'Unlink'],
+                ],
+                });
+            </script>
+        </div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-primary">发布</button>
+        </div>
+    </div>
+</form>
+{% endif %}
+{% for tweet in var.tweets %}
+<div>
+    <div class="well">
+        {{ tweet.content|safe }}
+        <div style="height:25px; line-height:25px">
+            <div class="pull-left">
+                <img src="/static/avatar.jpg" style="max-width: 25px" class="img-rounded img-responsive">
+            </div>
+            <div class="pull-left" style="font-size:10px; margin-left:5px; margin-right:10px;">
+                by <strong>风之小祈</strong> {{ tweet.created_at }}
+            </div>
+            <div class="btn-group btn-group-xs" style="">
+                <button type="button" class="btn btn-info">赞！</button>
+                <div class="btn-group btn-group-xs">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        转发 <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">人人</a></li>
+                        <li><a href="#">新浪微博</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+

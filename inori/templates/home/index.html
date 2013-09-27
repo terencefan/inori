@@ -1,60 +1,10 @@
-{% extends "/base.html" %}
-
-{% block title %}
-    小祈和小翼的储藏室
-{% endblock %}
-
-{% block jumbotran %}
-    <div class="jumbotron">
-        <h1>白兔糖</h1>
-        <p>小祈会拯救大家的！</p>
-        <p><a class="btn btn-primary btn-lg" role="button">了解更多（但不是现在）</a></p>
-    </div>
-{% endblock %}
-
-{% block index_active %}
-    class = "active"
-{% endblock %}
-
-{% block bc_0 %}
-{% endblock %}
-
-{% block sidebar %}
-<div class="well">
-    <img src="/static/avatar.jpg" class="img-rounded img-responsive">
-    <h3>风之小祈</h3>
-    <address>
-        <strong>Eleme, Inc.</strong><br>
-        <abbr title="Phone">15216709049</abbr><br>
-        <a href="mailto:stdrickforce@gmail.com">stdrickforce@gmail.com</a>
-</div>
-<div class="well">
-    <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="#">全部动态</a></li>
-        <li><a href="#">状态</a></li>
-        <li><a href="#">博文</a></li>
-        <li><a href="#">dkp</a></li>
-    </ul>
-</div>
-{% endblock %}
+{% extends "/home/base.html" %}
 
 {% block content %}
-{% if session.logged_in and session.user.is_super_admin %}
-<form class="form-horizontal" role="form" action="{{ url_for('add_tweet') }}" method="post">
-    <div class="form-group">
-        <div class="col-xs-10">
-            <textarea class="form-control" name="content" rows="3">说点什么吧...</textarea>
-        </div>
-        <div class="col-xs-2">
-            <button type="submit" class="btn btn-primary">发布</button>
-        </div>
-    </div>
-</form>
-{% endif %}
 {% for tweet in var.tweets %}
 <div>
     <div class="well">
-        <p>{{ tweet.content }}</p>
+        <p>{{ tweet.content|safe }}</p>
         <div style="height:25px; line-height:25px">
             <div class="pull-left">
                 <img src="/static/avatar.jpg" style="max-width: 25px" class="img-rounded img-responsive">
