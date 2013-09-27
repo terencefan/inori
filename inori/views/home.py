@@ -4,7 +4,6 @@ from flask import Module, Markup
 home = Module(__name__)
 
 from flask import (
-    flash,
     redirect,
     render_template,
     request,
@@ -15,18 +14,29 @@ from flask import (
 from inori.models.home import (
     DBSession,
     Tweet,
+)
+
+from inori.models.account import (
     User,
 )
 
-home = Module(__name__)
+from inori.logger import logger
 
 
 @home.route('/')
 @home.route('/index')
 def index():
     dbsession = DBSession()
-    tweets = dbsession.query(Tweet).\
+    results = dbsession.query(User, Tweet).\
+        filter(User.id == Tweet.user_id).\
         order_by(Tweet.created_at.desc())
+
+    tweets = []
+
+    for user, tweet in results:
+        setattr(tweet, 'nickname', user.nickname)
+        setattr(tweet, 'content_text', Markup(tweet.content).striptags())
+        tweets.append(tweet)
 
     var = {
         'tweets': tweets,
@@ -67,7 +77,12 @@ def add_tweet():
     content = request.form['content']
 
     if not is_super_admin:
-        return redirect(url_for('index'))
+        logger.error_code(logger.PERMISSION_DENIED)
+        return redirect(url_for('tweet'))
+
+    if len(content) < 10:
+        logger.error_code(logger.TWEET_IS_TOO_SHORT)
+        return redirect(url_for('tweet'))
 
     tweet = Tweet(user_id, content)
 
@@ -76,37 +91,3 @@ def add_tweet():
     dbsession.commit()
 
     return redirect(url_for('tweet'))
-
-
-@home.route('/signin', methods=['GET', 'POST'])
-def signin():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        dbsession = DBSession()
-        user = dbsession.query(User).\
-            filter(User.email == username).\
-            filter(User.password == password).\
-            first()
-
-        if user:
-            session['logged_in'] = True
-            session['user'] = {
-                "id": user.id,
-                "email": user.email,
-                "nickname": user.nickname,
-                "is_super_admin": user.is_super_admin,
-            }
-            flash(u'您已经成功登陆')
-            return redirect(url_for('index'))
-
-    flash(u'用户名或密码错误')
-    return redirect(url_for('index'))
-
-
-@home.route('/signout', methods=['GET', 'POST'])
-def signout():
-    session.pop('logged_in', None)
-    session.pop('user', None)
-    return redirect(url_for('index'))

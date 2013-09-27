@@ -10,7 +10,6 @@ engine = create_engine(master_url)
 from sqlalchemy import (
     Boolean,
     Column,
-    DateTime,
     Integer,
     String,
 )
@@ -22,17 +21,21 @@ from sqlalchemy.orm import sessionmaker
 DBSession = sessionmaker(bind=engine)
 
 
-class Tweet(DeclarativeBase):
-    __tablename__ = 'tweet'
+class User(DeclarativeBase):
+    __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, default=0)
-    content = Column(String(200), default=u"")
-    created_at = Column(DateTime)
+    email = Column(String(30))
+    password = Column(String(20), default=u"123456")
+    nickname = Column(String(20), default=u"")
+    is_super_admin = Column(Boolean, default=False)
+    welcome_info = Column(String(200), default=u"")
 
-    def __init__(self, user_id, content):
-        self.user_id = user_id
-        self.content = content
+    def __init__(self, email, password, nickname):
+        self.email = email
+        self.password = password
+        self.nickname = nickname
+        self.welcome_info = u"欢迎，{}".format(nickname)
 
 
 if __name__ == '__main__':

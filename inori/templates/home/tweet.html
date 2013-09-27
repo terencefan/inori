@@ -6,17 +6,15 @@
 {% if session.logged_in and session.user.is_super_admin %}
 <form class="form-horizontal" role="form" action="{{ url_for('add_tweet') }}" method="post">
     <div class="form-group">
-        <div class="col-xs-10">
-            <textarea class="form-control" name="content">说点什么吧...</textarea>
+        <div class="col-md-10">
+            <textarea class="form-control" name="content"></textarea>
             <script type="text/javascript">
                 CKEDITOR.replace('content',{
-                toolbar: [
-                    ['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'FontSize', '-', 'Link', 'Unlink'],
-                ],
+                    toolbar: [['Bold', 'Italic', 'Underline', 'Strike', '-', 'TextColor', 'FontSize', '-', 'Link', 'Unlink']],
                 });
             </script>
         </div>
-        <div class="col-xs-2">
+        <div class="col-md-2" style="height: 50px; line-height: 50px">
             <button type="submit" class="btn btn-primary">发布</button>
         </div>
     </div>
