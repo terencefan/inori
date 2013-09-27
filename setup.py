@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import distutils.sysconfig
+import os
+
 import ez_setup
 ez_setup.use_setuptools()
 
@@ -18,3 +21,10 @@ setup(
         "sqlalchemy>=0.8.0",
     ]
 )
+
+site_path = distutils.sysconfig.get_python_lib()
+print site_path
+
+f = open("{}/inori.pth".format(site_path), 'w')
+f.write(os.getcwd())
+f.close()

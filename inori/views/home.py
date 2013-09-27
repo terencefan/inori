@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from flask import Flask
-app = Flask(__name__)
+from flask import Module
+home = Module(__name__)
 
 from flask import (
     flash,
@@ -12,15 +12,17 @@ from flask import (
     url_for,
 )
 
-from models import (
+from inori.models.home import (
     DBSession,
     Tweet,
     User,
 )
 
+home = Module(__name__)
 
-@app.route('/')
-@app.route('/index')
+
+@home.route('/')
+@home.route('/index')
 def index():
     dbsession = DBSession()
     tweets = dbsession.query(Tweet).\
@@ -29,10 +31,10 @@ def index():
     var = {
         'tweets': tweets,
     }
-    return render_template('index.html', var=var)
+    return render_template('home/index.html', var=var)
 
 
-@app.route('/add_tweet', methods=['GET', 'POST'])
+@home.route('/add_tweet', methods=['GET', 'POST'])
 def add_tweet():
     user_id = session['user']['id']
     is_super_admin = session['user']['is_super_admin']
@@ -50,7 +52,7 @@ def add_tweet():
     return redirect(url_for('index'))
 
 
-@app.route('/signin', methods=['GET', 'POST'])
+@home.route('/signin', methods=['GET', 'POST'])
 def signin():
     if request.method == 'POST':
         username = request.form['username']
@@ -77,14 +79,8 @@ def signin():
     return redirect(url_for('index'))
 
 
-@app.route('/signout', methods=['GET', 'POST'])
+@home.route('/signout', methods=['GET', 'POST'])
 def signout():
     session.pop('logged_in', None)
     session.pop('user', None)
     return redirect(url_for('index'))
-
-
-if __name__ == '__main__':
-    app.debug = True
-    app.secret_key = "_g\x13`\x03\xd8rMg\x1a\x04i6\xbeuV'\xa1\r]\xbf\xa7\xf0N"
-    app.run(host='0.0.0.0')

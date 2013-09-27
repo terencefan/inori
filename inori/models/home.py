@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from settings import mysql_settings
+from inori.settings import mysql_settings
 
 from sqlalchemy import create_engine
 master_url = ("mysql://{user}:{passwd}@{host}:{port}/{database}"
