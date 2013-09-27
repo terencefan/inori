@@ -3,6 +3,7 @@
 {% block home_active %}home_blog{% endblock %}
 
 {% block content %}
+{% if session.logged_in and session.user.is_super_admin %}
 <form class="form-horizontal" role="form" action="" method="post">
     <div class="form-group">
         <label for="inputContent" class="col-xs-1 control-label">标题</label>
@@ -18,5 +19,6 @@
         </div>
     </div>
 </form>
+{% endif %}
 {% endblock %}
 

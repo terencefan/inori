@@ -37,8 +37,16 @@ def index():
 @home.route('/tweet')
 def tweet():
     dbsession = DBSession()
-    tweets = dbsession.query(Tweet).\
+    results = dbsession.query(User, Tweet).\
+        filter(User.id == Tweet.user_id).\
         order_by(Tweet.created_at.desc())
+
+    tweets = []
+
+    for user, tweet in results:
+        setattr(tweet, 'nickname', user.nickname)
+        setattr(tweet, 'content_text', Markup(tweet.content).striptags())
+        tweets.append(tweet)
 
     var = {
         'tweets': tweets,
