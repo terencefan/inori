@@ -8,11 +8,11 @@ master_url = ("mysql://{user}:{passwd}@{host}:{port}/{database}"
 engine = create_engine(master_url)
 
 from sqlalchemy import (
-    Boolean,
     Column,
     DateTime,
     Integer,
     String,
+    Text,
 )
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -33,6 +33,27 @@ class Tweet(DeclarativeBase):
     def __init__(self, user_id, content):
         self.user_id = user_id
         self.content = content
+
+
+class Blog(DeclarativeBase):
+    __tablename__ = 'blog'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, default=0)
+    blog_category_name = Column(String(20), default=u"")
+    title = Column(String(50), default=u"")
+    content = Column(Text, default=u"")
+    created_at = Column(DateTime)
+
+
+class BlogCategory(DeclarativeBase):
+    __tablename__ = 'blog_category'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20), default=u"")
+
+    def __init__(self, name):
+        self.name = name
 
 
 if __name__ == '__main__':

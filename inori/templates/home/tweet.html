@@ -20,32 +20,8 @@
     </div>
 </form>
 {% endif %}
-{% for tweet in var.tweets %}
-<div>
-    <div class="well">
-        {{ tweet.content|safe }}
-        <div style="height:25px; line-height:25px">
-            <div class="pull-left">
-                <img src="/static/avatar.jpg" style="max-width: 25px" class="img-rounded img-responsive">
-            </div>
-            <div class="pull-left" style="font-size:10px; margin-left:5px; margin-right:10px;">
-                by <strong>{{ tweet.nickname }}</strong> {{ tweet.created_at }}
-            </div>
-            <div class="btn-group btn-group-xs" style="">
-                <button type="button" class="btn btn-info">赞！</button>
-                <div class="btn-group btn-group-xs">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                        转发 <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">人人</a></li>
-                        <li><a href="#">新浪微博</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{% for item in var.tweets %}
+    {%- include "/home/cell/tweet.html" -%}
 {% endfor %}
 {% endblock %}
 
