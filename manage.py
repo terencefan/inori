@@ -1,4 +1,13 @@
 # -*- coding:utf-8 -*-
+import distutils.sysconfig
+import os
+
+site_path = distutils.sysconfig.get_python_lib()
+
+f = open("{}/inori.pth".format(site_path), 'w')
+f.write(os.getcwd())
+f.close()
+
 from inori import app
 
 if __name__ == '__main__':
