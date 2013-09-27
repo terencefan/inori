@@ -3,6 +3,8 @@
 from flask import Module
 home = Module(__name__)
 
+from datetime import datetime, timedelta
+
 from sqlalchemy.exc import SQLAlchemyError
 
 from flask import (
@@ -28,25 +30,64 @@ from inori.models.account import (
 from inori.logger import logger
 
 
+def tweet_items(now, hour_s, hour_t):
+    time_s = now - timedelta(hours=hour_s)
+    time_t = now - timedelta(hours=hour_t)
+
+    results = DBSession().query(User, Tweet).\
+        filter(User.id == Tweet.user_id).\
+        filter(Tweet.created_at.between(time_t, time_s))
+
+    items = []
+    for user, tweet in results:
+        item = tweet
+        setattr(item, 'user', user)
+        setattr(item, 'item_type', 'tweet')
+        items.append(item)
+
+    return items
+
+
+def blog_items(now, hour_s, hour_t):
+    time_s = now - timedelta(hours=hour_s)
+    time_t = now - timedelta(hours=hour_t)
+
+    results = DBSession().query(User, Blog).\
+        filter(User.id == Blog.user_id).\
+        filter(Blog.created_at.between(time_t, time_s))
+
+    items = []
+    for user, blog in results:
+        item = blog
+        setattr(item, 'user', user)
+        setattr(item, 'item_type', 'blog')
+        items.append(item)
+
+    return items
+
+
+def items_sort(now, hour_s, hour_t):
+    items = []
+    items += tweet_items(now, hour_s, hour_t)
+    items += blog_items(now, hour_s, hour_t)
+
+    return sorted(items, key=lambda a: a.created_at, reverse=True)
+
+
 @home.route('/')
 @home.route('/index')
 def index():
-    dbsession = DBSession()
-    results = dbsession.query(User, Tweet).\
-        filter(User.id == Tweet.user_id).\
-        order_by(Tweet.created_at.desc())
 
-    blocks = []
+    var = {}
+    now = datetime.now()
 
-    for user, tweet in results:
-        block = tweet
-        setattr(block, 'user', user)
-        setattr(block, 'block_type', 'tweet')
-        blocks.append(block)
+    var['items_3h'] = items_sort(now, 0, 3)
+    var['items_6h'] = items_sort(now, 3, 6)
+    var['items_12h'] = items_sort(now, 6, 12)
+    var['items_1d'] = items_sort(now, 12, 24)
+    var['items_3d'] = items_sort(now, 24, 72)
+    var['items_1w'] = items_sort(now, 72, 168)
 
-    var = {
-        'blocks': blocks,
-    }
     return render_template('home/index.html', var=var)
 
 

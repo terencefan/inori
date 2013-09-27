@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block javascript %}
-var home_active = "{% block home_active %}home_index{% endblock %}";
+var home_active = "{% block home_active %}{% endblock %}";
 $("#" + home_active).addClass("active");
 {% endblock %}
 
@@ -32,7 +32,7 @@ $("#" + home_active).addClass("active");
         <abbr title="Phone">15216709049</abbr><br>
         <a href="mailto:stdrickforce@gmail.com">stdrickforce@gmail.com</a>
 </div>
-<div class="well">
+<div class="well" id="sidenavbar" style="margin: 20px 0">
     <ul class="nav nav-pills nav-stacked">
         <li id="home_index"><a href="{{ url_for('home.index') }}">全部动态</a></li>
         <li id="home_tweet"><a href="{{ url_for('home.tweet') }}">状态</a></li>
