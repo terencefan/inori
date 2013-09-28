@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 
-from flask import request
+from flask import request, redirect
 from functools import wraps
 
 from inori.logger import logger
@@ -62,12 +62,15 @@ def validate(validators):
         @wraps(function)
         def wrapped():
 
+            has_error = False
+
             required = set([k for k, v in validators.items() if not v[2]])
             request_params = set(request.form.keys())
-            missing = required - request_params
+            missing_params = required - request_params
 
-            if missing:
-                logger.error(u'缺少参数')
+            for param in missing_params:
+                logger.error(u'缺少参数{}'.format(param))
+                has_error = True
 
             for key, val in request.form.items():
                 if key not in validators:
@@ -75,7 +78,10 @@ def validate(validators):
                 func, name, optional = validators.get(key)
                 if not check(func, val):
                     logger.error_format(key)
+                    has_error = True
 
+            if has_error:
+                return redirect(request.referrer)
             return function()
         return wrapped
     return wrap

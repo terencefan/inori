@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import session
+from flask import flash
 
 """
 inori.logger
@@ -9,13 +9,6 @@ This module contains all Exception
 """
 
 
-def init_session():
-    keys = ['info_list', 'error_list']
-    for key in keys:
-        if key not in session.keys():
-            session[key] = []
-
-
 class InoriLogger(object):
 
     # SYSTEM_ERROR
@@ -23,25 +16,27 @@ class InoriLogger(object):
     PERMISSION_DENIED = 601
 
     # USER_EXCEPTION
-    USER_AUTH_FAILED = 700
-    REPEAT_PWD_MISMATCH = 701
+    USER_NOT_FOUND = 700
+    USER_AUTH_FAILED = 701
     TWEET_IS_TOO_SHORT = 702
     BLOG_CATEGORY_NAME_IS_TOO_SHORT = 703
     BLOG_TITLE_IS_TOO_SHORT = 704
     BLOG_CONTENT_IS_TOO_SHORT = 705
     BLOG_CATEGORY_NOT_FOUND = 706
+    REPEAT_PWD_MISMATCH = 707
 
     CODE_TO_MSG_MAP = {
         UNKNOWN_ERROR: u"一些奇怪的错误粗线了！",
         PERMISSION_DENIED: u"噗噗噗，这可不是你能来的地方",
 
-        USER_AUTH_FAILED: u"看起来就是输错邮箱或密码了，一股弱者的气息",
-        REPEAT_PWD_MISMATCH: u'不好好确认密码的话就不给你注册！',
+        USER_NOT_FOUND: u"你确定这么个人存在嘛？啊？",
+        USER_AUTH_FAILED: u"一看就是输错密码了，充满着弱者的气息",
         TWEET_IS_TOO_SHORT: u"是不可以发空的状态哦",
         BLOG_CATEGORY_NAME_IS_TOO_SHORT: u"博文分类名有点短呢",
         BLOG_TITLE_IS_TOO_SHORT: u"博文标题不能没有哦",
         BLOG_CONTENT_IS_TOO_SHORT: u"你知道卡拉赞毕业的基本要求是什么吗！那就是要在正文填写十五字！",
         BLOG_CATEGORY_NOT_FOUND: u"这个博文分类没有找到诶？好奇怪",
+        REPEAT_PWD_MISMATCH: u'不好好确认密码的话就不给你注册！',
     }
 
     KEY_TO_MSG_MAP = {
@@ -50,16 +45,14 @@ class InoriLogger(object):
     }
 
     def info(self, msg):
-        init_session()
-        session['info_list'].append(msg)
+        flash(msg, 'info')
 
     def info_code(self, code):
         msg = ""
         return self.info(msg)
 
     def error(self, msg):
-        init_session()
-        session['error_list'].append(msg)
+        flash(msg, 'error')
 
     def error_code(self, code):
         msg = self.CODE_TO_MSG_MAP.get(code, u"一些奇怪的错误粗线了！")
@@ -70,6 +63,7 @@ class InoriLogger(object):
         return self.error(msg)
 
     def error_sql(self, se):
+        print se
         return self.error(u'数据库出现错误，请检查输入')
 
     def error_unknown(self):

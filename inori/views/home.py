@@ -16,7 +16,7 @@ from flask import (
 )
 
 from inori.models import (
-    DBSession,
+    dbsession,
     # models
     Blog,
     BlogCategory,
@@ -37,7 +37,7 @@ def tweet_items(now, hour_s, hour_t):
     time_s = now - timedelta(hours=hour_s)
     time_t = now - timedelta(hours=hour_t)
 
-    results = DBSession().query(User, Tweet).\
+    results = dbsession.query(User, Tweet).\
         filter(User.id == Tweet.user_id).\
         filter(Tweet.created_at.between(time_t, time_s))
 
@@ -55,7 +55,7 @@ def blog_items(now, hour_s, hour_t):
     time_s = now - timedelta(hours=hour_s)
     time_t = now - timedelta(hours=hour_t)
 
-    results = DBSession().query(User, Blog).\
+    results = dbsession.query(User, Blog).\
         filter(User.id == Blog.user_id).\
         filter(Blog.created_at.between(time_t, time_s))
 
@@ -88,7 +88,6 @@ TIME_AREA = [
 
 @home.route('/')
 @home.route('/index')
-@validate({})
 def index():
 
     var = {'areas': []}
@@ -112,9 +111,7 @@ def index():
 
 
 @home.route('/tweet')
-@validate({})
 def tweet():
-    dbsession = DBSession()
 
     results = dbsession.query(User, Tweet).\
         filter(User.id == Tweet.user_id).\
@@ -134,10 +131,7 @@ def tweet():
 
 
 @home.route('/blog')
-@validate({})
 def blog():
-
-    dbsession = DBSession()
 
     bcs = dbsession.query(BlogCategory)
     results = dbsession.query(User, Blog).\
@@ -172,7 +166,6 @@ def add_tweet():
 
     tweet = Tweet(user_id, content)
 
-    dbsession = DBSession()
     dbsession.add(tweet)
 
     try:
@@ -195,7 +188,6 @@ def add_blog():
     blog_category_id = request.form['blog_category_id']
     content = request.form['content']
 
-    dbsession = DBSession()
     bc = dbsession.query(BlogCategory).get(blog_category_id)
 
     if not bc:
@@ -240,7 +232,6 @@ def add_blog_category():
 
     blog_category = BlogCategory(name)
 
-    dbsession = DBSession()
     dbsession.add(blog_category)
 
     try:

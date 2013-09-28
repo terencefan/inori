@@ -8,11 +8,10 @@ from sqlalchemy import (
     Text,
 )
 
-from sqlalchemy.ext.declarative import declarative_base
-DeclarativeBase = declarative_base()
+from .database import Base
 
 
-class Tweet(DeclarativeBase):
+class Tweet(Base):
     __tablename__ = 'tweet'
 
     id = Column(Integer, primary_key=True)
@@ -25,7 +24,7 @@ class Tweet(DeclarativeBase):
         self.content = content
 
 
-class Blog(DeclarativeBase):
+class Blog(Base):
     __tablename__ = 'blog'
 
     id = Column(Integer, primary_key=True)
@@ -36,7 +35,7 @@ class Blog(DeclarativeBase):
     created_at = Column(DateTime)
 
 
-class BlogCategory(DeclarativeBase):
+class BlogCategory(Base):
     __tablename__ = 'blog_category'
 
     id = Column(Integer, primary_key=True)

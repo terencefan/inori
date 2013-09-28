@@ -3,6 +3,8 @@
 from flask import Module
 account = Module(__name__)
 
+from sqlalchemy.exc import SQLAlchemyError
+
 from flask import (
     redirect,
     request,
@@ -11,7 +13,7 @@ from flask import (
 )
 
 from inori.models import (
-    DBSession,
+    dbsession,
     User,
 )
 
@@ -24,7 +26,19 @@ from inori.validator import (
 )
 
 
-@account.route('/signup', methods=['GET', 'POST'])
+def set_user(user):
+    session['logged_in'] = True
+    session['user'] = {
+        'id': user.id,
+        'email': user.email,
+        'nickname': user.nickname,
+        'is_super_admin': user.is_super_admin,
+        'is_active': user.is_active,
+    }
+    logger.info(user.welcome_info)
+
+
+@account.route('/signup', methods=['POST'])
 @validate({
     'email': EMAIL,
     'nickname': STR,
@@ -40,50 +54,47 @@ def signup():
 
     if password != repeat_pwd:
         logger.error_code(logger.REPEAT_PWD_MISMATCH)
+        return redirect(request.referrer)
 
     user = User(email, password, nickname)
-    print user
+    dbsession.add(user)
 
-    return redirect(url_for('home.index'))
+    try:
+        dbsession.commit()
+    except SQLAlchemyError as se:
+        logger.error_sql(se)
+        return redirect(request.referrer)
+
+    set_user(user)
+    return redirect(request.referrer)
 
 
-@account.route('/signin', methods=['GET', 'POST'])
+@account.route('/signin', methods=['POST'])
 @validate({
-    'username': STR,
+    'account': STR,
     'password': STR,
 })
 def signin():
 
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+    account = request.form['account']
+    password = request.form['password']
 
-        dbsession = DBSession()
-        user = dbsession.query(User).\
-            filter(User.email == username).\
-            filter(User.password == password).\
-            first()
+    user = dbsession.query(User).\
+        filter(User.email == account).\
+        first()
 
-        if user:
-            session['logged_in'] = True
-            session['user'] = {
-                "id": user.id,
-                "email": user.email,
-                "nickname": user.nickname,
-                "is_super_admin": user.is_super_admin,
-            }
-            logger.info(user.welcome_info)
-            return redirect(url_for('home.index'))
+    if user:
+        if user.authorize(password):
+            set_user(user)
         else:
             logger.error_code(logger.USER_AUTH_FAILED)
     else:
-        logger.error_unknown()
+        logger.error_code(logger.USER_NOT_FOUND)
 
-    return redirect(url_for('home.index'))
+    return redirect(request.referrer)
 
 
 @account.route('/signout', methods=['GET', 'POST'])
-@validate({})
 def signout():
     session.pop('logged_in', None)
     session.pop('user', None)
