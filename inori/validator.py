@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 import re
 
-from flask import request, redirect
+from flask import (
+    request,
+    redirect,
+    session,
+)
 from functools import wraps
 
 from inori.logger import logger
@@ -85,3 +89,35 @@ def validate(validators):
             return function()
         return wrapped
     return wrap
+
+
+def login_required(function):
+    @wraps(function)
+    def wrapped(*args, **kwargs):
+        if session.get('logged_in') and session.get('user'):
+            if not session['user'].get('is_active'):
+                logger.info(u'您的账号尚未被激活，请联系管理员或回答验证问题')
+                return redirect(request.referrer)
+            return function(*args, **kwargs)
+        else:
+            logger.info(u'您需要登陆后才能完成这一操作')
+            return redirect(request.referrer)
+    return wrapped
+
+
+def admin_required(function):
+    @wraps(function)
+    def wrapped(*args, **kwargs):
+        if session.get('logged_in') and session.get('user'):
+            if not session['user'].get('is_active'):
+                logger.info(u'您的账号尚未被激活，请联系管理员或回答验证问题')
+                return redirect(request.referrer)
+            if not session['user'].get('is_super_admin'):
+                logger.error(u'您无权完成这一操作, 如有疑问请联系小祈~')
+                return redirect(request.referrer)
+            return function(*args, **kwargs)
+        else:
+            logger.info(u'您需要登陆后才能完成这一操作')
+            return redirect(request.referrer)
+        return function(*args, **kwargs)
+    return wrapped

@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from flask import (
     redirect,
+    render_template,
     request,
     session,
     url_for,
@@ -100,3 +101,8 @@ def signout():
     session.pop('user', None)
     logger.info(u'您已经成功注销了用户')
     return redirect(url_for('home.index'))
+
+
+@account.route('/user/<int:user_id>', methods=['GET', 'POST'])
+def user(user_id):
+    return render_template('account/user.html')

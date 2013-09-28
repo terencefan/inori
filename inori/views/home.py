@@ -29,7 +29,9 @@ from inori.logger import logger
 from inori.validator import (
     INT,
     STR,
-    validate
+    validate,
+    login_required,
+    admin_required,
 )
 
 
@@ -111,6 +113,7 @@ def index():
 
 
 @home.route('/tweet')
+@admin_required
 def tweet():
 
     results = dbsession.query(User, Tweet).\
@@ -131,6 +134,7 @@ def tweet():
 
 
 @home.route('/blog')
+@login_required
 def blog():
 
     bcs = dbsession.query(BlogCategory)
@@ -153,6 +157,7 @@ def blog():
 
 
 @home.route('/add_tweet', methods=['GET', 'POST'])
+@admin_required
 @validate({
     'content': STR,
 })
@@ -177,6 +182,7 @@ def add_tweet():
 
 
 @home.route('/add_blog', methods=['GET', 'POST'])
+@admin_required
 @validate({
     'title': STR,
     'blog_category_id': INT,
@@ -220,6 +226,7 @@ def add_blog():
 
 
 @home.route('/add_blog_category', methods=['GET', 'POST'])
+@admin_required
 @validate({
     'name': STR,
 })
