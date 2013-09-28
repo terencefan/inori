@@ -26,6 +26,12 @@ from inori.models import (
 
 from inori.logger import logger
 
+from inori.validator import (
+    INT,
+    STR,
+    validate
+)
+
 
 def tweet_items(now, hour_s, hour_t):
     time_s = now - timedelta(hours=hour_s)
@@ -70,25 +76,43 @@ def items_sort(now, hour_s, hour_t):
 
     return sorted(items, key=lambda a: a.created_at, reverse=True)
 
+TIME_AREA = [
+    ('3h', '3 hours', 0, 3),
+    ('6h', '6 hours', 3, 6),
+    ('12h', '12 hours', 6, 12),
+    ('1d', '1 day', 12, 24),
+    ('3d', '3 days', 24, 72),
+    ('1w', '1 week', 72, 168),
+]
+
 
 @home.route('/')
 @home.route('/index')
+@validate({})
 def index():
 
-    var = {}
+    var = {'areas': []}
     now = datetime.now()
 
-    var['items_3h'] = items_sort(now, 0, 3)
-    var['items_6h'] = items_sort(now, 3, 6)
-    var['items_12h'] = items_sort(now, 6, 12)
-    var['items_1d'] = items_sort(now, 12, 24)
-    var['items_3d'] = items_sort(now, 24, 72)
-    var['items_1w'] = items_sort(now, 72, 168)
+    for area in TIME_AREA:
+        postfix, text, hour_s, hour_t = area
+
+        trends = items_sort(now, hour_s, hour_t)
+        if not trends:
+            continue
+
+        area = {
+            'postfix': postfix,
+            'text': text,
+            'trends': trends,
+        }
+        var['areas'].append(area)
 
     return render_template('home/index.html', var=var)
 
 
 @home.route('/tweet')
+@validate({})
 def tweet():
     dbsession = DBSession()
 
@@ -110,6 +134,7 @@ def tweet():
 
 
 @home.route('/blog')
+@validate({})
 def blog():
 
     dbsession = DBSession()
@@ -134,6 +159,9 @@ def blog():
 
 
 @home.route('/add_tweet', methods=['GET', 'POST'])
+@validate({
+    'content': STR,
+})
 def add_tweet():
     user_id = session['user']['id']
     content = request.form['content']
@@ -156,6 +184,11 @@ def add_tweet():
 
 
 @home.route('/add_blog', methods=['GET', 'POST'])
+@validate({
+    'title': STR,
+    'blog_category_id': INT,
+    'content': STR,
+})
 def add_blog():
     user_id = session['user']['id']
     title = request.form['title']
@@ -195,6 +228,9 @@ def add_blog():
 
 
 @home.route('/add_blog_category', methods=['GET', 'POST'])
+@validate({
+    'name': STR,
+})
 def add_blog_category():
     name = request.form['name']
 

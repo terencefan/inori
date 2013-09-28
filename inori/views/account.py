@@ -16,9 +16,42 @@ from inori.models import (
 )
 
 from inori.logger import logger
+from inori.validator import (
+    EMAIL,
+    PASSWORD,
+    STR,
+    validate
+)
+
+
+@account.route('/signup', methods=['GET', 'POST'])
+@validate({
+    'email': EMAIL,
+    'nickname': STR,
+    'password': PASSWORD,
+    'repeat_pwd': STR,
+})
+def signup():
+
+    email = request.form['email']
+    nickname = request.form['nickname']
+    password = request.form['password']
+    repeat_pwd = request.form['repeat_pwd']
+
+    if password != repeat_pwd:
+        logger.error_code(logger.REPEAT_PWD_MISMATCH)
+
+    user = User(email, password, nickname)
+    print user
+
+    return redirect(url_for('home.index'))
 
 
 @account.route('/signin', methods=['GET', 'POST'])
+@validate({
+    'username': STR,
+    'password': STR,
+})
 def signin():
 
     if request.method == 'POST':
@@ -50,6 +83,7 @@ def signin():
 
 
 @account.route('/signout', methods=['GET', 'POST'])
+@validate({})
 def signout():
     session.pop('logged_in', None)
     session.pop('user', None)

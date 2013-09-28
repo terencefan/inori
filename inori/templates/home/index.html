@@ -2,123 +2,29 @@
 
 {% block javascript %}
     $("#home_index").addClass("active");
-    $("#text_3h").pin({
-        containerSelector: "#block_3h"
+    {% for area in var.areas %}
+    $("#text_{{ area.postfix }}").pin({
+        containerSelector: "#area_{{ area.postfix }}"
     })
-    $("#text_6h").pin({
-        containerSelector: "#block_6h"
-    })
-    $("#text_12h").pin({
-        containerSelector: "#block_12h"
-    })
-    $("#text_1d").pin({
-        containerSelector: "#block_1d"
-    })
-    $("#text_3d").pin({
-        containerSelector: "#block_3d"
-    })
-    $("#text_1w").pin({
-        containerSelector: "#block_1w"
-    })
+    {% endfor %}
 {% endblock %}
 
 {% block content %}
-
-<div class="row" id="block_3h">
+{% for area in var.areas %}
+<div class="row" id="area_{{ area.postfix }}">
     <div class="col-xs-11">
-{% for item in var.items_3h %}
-    {% if item.item_type == 'tweet' %}
-        {%- include "/home/cell/tweet.html" -%}
-    {% endif %}
-    {% if item.item_type == 'blog' %}
-        {%- include "/home/cell/blog.html" -%}
-    {% endif %}
-{% endfor %}
+        {% for item in area.trends %}
+            {% if item.item_type == 'tweet' %}
+                {%- include "/home/cell/tweet.html" -%}
+            {% endif %}
+            {% if item.item_type == 'blog' %}
+                {%- include "/home/cell/blog.html" -%}
+            {% endif %}
+        {% endfor %}
     </div>
     <div class="col-xs-1">
-        <h2 class="text-muted" id="text_3h">3 hours</h2>
+        <h3 class="text-muted" id="text_{{ area.postfix }}">{{ area.text }}</h3>
     </div>
 </div>
-
-<div class="row" id="block_6h">
-    <div class="col-xs-11">
-{% for item in var.items_6h %}
-    {% if item.item_type == 'tweet' %}
-        {%- include "/home/cell/tweet.html" -%}
-    {% endif %}
-    {% if item.item_type == 'blog' %}
-        {%- include "/home/cell/blog.html" -%}
-    {% endif %}
 {% endfor %}
-    </div>
-    <div class="col-xs-1">
-        <h2 class="text-muted" id="text_6h">6 hours</h2>
-    </div>
-</div>
-
-<div class="row" id="block_12h">
-    <div class="col-xs-11">
-{% for item in var.items_12h %}
-    {% if item.item_type == 'tweet' %}
-        {%- include "/home/cell/tweet.html" -%}
-    {% endif %}
-    {% if item.item_type == 'blog' %}
-        {%- include "/home/cell/blog.html" -%}
-    {% endif %}
-{% endfor %}
-    </div>
-    <div class="col-xs-1">
-        <h2 class="text-muted" id="text_12h">12 hours</h2>
-    </div>
-</div>
-
-<div class="row" id="block_1d">
-    <div class="col-xs-11">
-{% for item in var.items_1d %}
-    {% if item.item_type == 'tweet' %}
-        {%- include "/home/cell/tweet.html" -%}
-    {% endif %}
-    {% if item.item_type == 'blog' %}
-        {%- include "/home/cell/blog.html" -%}
-    {% endif %}
-{% endfor %}
-    </div>
-    <div class="col-xs-1">
-        <h2 class="text-muted" id="text_1d">1 day</h2>
-    </div>
-</div>
-
-<div class="row" id="block_3d">
-    <div class="col-xs-11">
-{% for item in var.items_3d %}
-    {% if item.item_type == 'tweet' %}
-        {%- include "/home/cell/tweet.html" -%}
-    {% endif %}
-    {% if item.item_type == 'blog' %}
-        {%- include "/home/cell/blog.html" -%}
-    {% endif %}
-{% endfor %}
-    </div>
-    <div class="col-xs-1">
-        <h2 class="text-muted" id="text_3d">3 days</h2>
-    </div>
-</div>
-
-<div class="row" id="block_1w">
-    <div class="col-xs-11">
-{% for item in var.items_1w %}
-    {% if item.item_type == 'tweet' %}
-        {%- include "/home/cell/tweet.html" -%}
-    {% endif %}
-    {% if item.item_type == 'blog' %}
-        {%- include "/home/cell/blog.html" -%}
-    {% endif %}
-{% endfor %}
-    </div>
-    <div class="col-xs-1">
-        <h2 class="text-muted" id="text_1w">1 week</h2>
-    </div>
-</div>
-
 {% endblock %}
-

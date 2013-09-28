@@ -52,12 +52,12 @@
         </script>
 
     </head>
-    <body style="padding: 20px 0 70px 0">
+    <body>
         <div style="display:none">
             {{ session.pop('info_list', []) }}
             {{ session.pop('error_list', []) }}
         </div>
-        <nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+        <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -108,10 +108,10 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {% block sidebar %}<h2>Sidebar</h2>{% endblock %}
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-9">
                     {% block content %}<h2>Content</h2>{% endblock %}
                 </div>
             </div>
@@ -128,10 +128,36 @@
                         <h4 class="modal-title" id="signUpLabel">注册</h4>
                     </div>
                     <div class="modal-body">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">注册</button>
+                        <form class="form-horizontal" role="form" action="{{ url_for('account.signup') }}" method="post">
+                            <div class="form-group">
+                                <label for="exampleInputEmail" class="col-sm-2 control-label">邮箱</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="email" class="form-control" id="exampleInputUsername" placeholder="请输入您常用的邮箱">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputNickname" class="col-sm-2 control-label">昵称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="nickname" class="form-control" id="exampleInputNickname" placeholder="^_^喜欢的昵称起一个">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword" class="col-sm-2 control-label">密码</label>
+                                <div class="col-sm-10">
+                                    <input type="password" name="password" class="form-control" id="exampleInputPassword" placeholder="登录密码">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleRepeatPassword" class="col-sm-2 control-label">重复密码</label>
+                                <div class="col-sm-10">
+                                    <input type="password" name="repeat_pwd" class="form-control" id="exampleRepeatPassword" placeholder="重复密码">
+                                </div>
+                            </div>
+                            <div class="center-block">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="submit" class="btn btn-primary">注册</button>
+                            </div>
+                        </form>
                     </div>
                 </div> <!-- End of modal-content -->
             </div> <!-- End of modal-dialog -->
