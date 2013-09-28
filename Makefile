@@ -9,6 +9,9 @@ install:
 	python setup.py install --record install.record
 	@echo
 	@echo "Install finished."
+	python manage.py build
+	@echo
+	@echo "Build finished."
 
 uninstall:
 	cat install.record | xargs rm -rf

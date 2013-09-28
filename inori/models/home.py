@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from inori.settings import mysql_settings
-
-from sqlalchemy import create_engine
-master_url = ("mysql://{user}:{passwd}@{host}:{port}/{database}"
-              "?charset=utf8".format(**mysql_settings))
-engine = create_engine(master_url)
-
 from sqlalchemy import (
     Column,
     DateTime,
@@ -17,9 +10,6 @@ from sqlalchemy import (
 
 from sqlalchemy.ext.declarative import declarative_base
 DeclarativeBase = declarative_base()
-
-from sqlalchemy.orm import sessionmaker
-DBSession = sessionmaker(bind=engine)
 
 
 class Tweet(DeclarativeBase):
@@ -54,7 +44,3 @@ class BlogCategory(DeclarativeBase):
 
     def __init__(self, name):
         self.name = name
-
-
-if __name__ == '__main__':
-    DeclarativeBase.metadata.create_all(engine)

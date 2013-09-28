@@ -10,7 +10,7 @@ from flask import (
     url_for,
 )
 
-from inori.models.account import (
+from inori.models import (
     DBSession,
     User,
 )

@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from inori.settings import mysql_settings
-
-from sqlalchemy import create_engine
-master_url = ("mysql://{user}:{passwd}@{host}:{port}/{database}"
-              "?charset=utf8".format(**mysql_settings))
-engine = create_engine(master_url)
-
 from sqlalchemy import (
     Boolean,
     Column,
@@ -16,9 +9,6 @@ from sqlalchemy import (
 
 from sqlalchemy.ext.declarative import declarative_base
 DeclarativeBase = declarative_base()
-
-from sqlalchemy.orm import sessionmaker
-DBSession = sessionmaker(bind=engine)
 
 
 class User(DeclarativeBase):
@@ -36,7 +26,3 @@ class User(DeclarativeBase):
         self.password = password
         self.nickname = nickname
         self.welcome_info = u"欢迎，{}".format(nickname)
-
-
-if __name__ == '__main__':
-    DeclarativeBase.metadata.create_all(engine)

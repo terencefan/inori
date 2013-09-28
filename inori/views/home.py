@@ -15,15 +15,12 @@ from flask import (
     url_for,
 )
 
-from inori.models.home import (
+from inori.models import (
     DBSession,
     # models
     Blog,
     BlogCategory,
     Tweet,
-)
-
-from inori.models.account import (
     User,
 )
 
