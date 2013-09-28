@@ -23,6 +23,7 @@ from inori.validator import (
     EMAIL,
     PASSWORD,
     STR,
+    redirect_back,
     validate
 )
 
@@ -55,7 +56,7 @@ def signup():
 
     if password != repeat_pwd:
         logger.error_code(logger.REPEAT_PWD_MISMATCH)
-        return redirect(request.referrer)
+        return redirect_back()
 
     user = User(email, password, nickname)
     dbsession.add(user)
@@ -64,10 +65,10 @@ def signup():
         dbsession.commit()
     except SQLAlchemyError as se:
         logger.error_sql(se)
-        return redirect(request.referrer)
+        return redirect_back()
 
     set_user(user)
-    return redirect(request.referrer)
+    return redirect_back()
 
 
 @account.route('/signin', methods=['POST'])
@@ -92,7 +93,7 @@ def signin():
     else:
         logger.error_code(logger.USER_NOT_FOUND)
 
-    return redirect(request.referrer)
+    return redirect_back()
 
 
 @account.route('/signout', methods=['GET', 'POST'])

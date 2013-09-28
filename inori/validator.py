@@ -5,6 +5,7 @@ from flask import (
     request,
     redirect,
     session,
+    url_for,
 )
 from functools import wraps
 
@@ -47,6 +48,13 @@ def optional(formatter):
     return func_name(func, name, True)
 
 
+def redirect_back():
+    if request.referrer:
+        return redirect(request.referrer)
+    else:
+        return redirect(url_for('home.index'))
+
+
 BOOL = func_name(bool)
 EMAIL = func_name(is_email)
 FLOAT = func_name(float)
@@ -85,7 +93,7 @@ def validate(validators):
                     has_error = True
 
             if has_error:
-                return redirect(request.referrer)
+                return redirect_back()
             return function()
         return wrapped
     return wrap
@@ -97,11 +105,11 @@ def login_required(function):
         if session.get('logged_in') and session.get('user'):
             if not session['user'].get('is_active'):
                 logger.info(u'您的账号尚未被激活，请联系管理员或回答验证问题')
-                return redirect(request.referrer)
+                return redirect_back()
             return function(*args, **kwargs)
         else:
             logger.info(u'您需要登陆后才能完成这一操作')
-            return redirect(request.referrer)
+            return redirect_back()
     return wrapped
 
 
@@ -111,13 +119,13 @@ def admin_required(function):
         if session.get('logged_in') and session.get('user'):
             if not session['user'].get('is_active'):
                 logger.info(u'您的账号尚未被激活，请联系管理员或回答验证问题')
-                return redirect(request.referrer)
+                return redirect_back()
             if not session['user'].get('is_super_admin'):
                 logger.error(u'您无权完成这一操作, 如有疑问请联系小祈~')
-                return redirect(request.referrer)
+                return redirect_back()
             return function(*args, **kwargs)
         else:
             logger.info(u'您需要登陆后才能完成这一操作')
-            return redirect(request.referrer)
+            return redirect_back()
         return function(*args, **kwargs)
     return wrapped
