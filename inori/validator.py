@@ -2,6 +2,7 @@
 import re
 
 from flask import (
+    abort,
     request,
     redirect,
     session,
@@ -10,6 +11,11 @@ from flask import (
 from functools import wraps
 
 from inori.logger import logger
+
+from inori.models import (
+    dbsession,
+    User,
+)
 
 EMAIL_RE = re.compile('\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*')
 MOBILE_RE = re.compile('1[3|4|5|8]\d{9}')
@@ -72,7 +78,7 @@ OPTIONAL_STR = optional(STR)
 def validate(validators):
     def wrap(function):
         @wraps(function)
-        def wrapped():
+        def wrapped(*args, **kwargs):
 
             has_error = False
 
@@ -94,7 +100,7 @@ def validate(validators):
 
             if has_error:
                 return redirect_back()
-            return function()
+            return function(*args, **kwargs)
         return wrapped
     return wrap
 
@@ -103,9 +109,21 @@ def login_required(function):
     @wraps(function)
     def wrapped(*args, **kwargs):
         if session.get('logged_in') and session.get('user'):
-            if not session['user'].get('is_active'):
+            return function(*args, **kwargs)
+        else:
+            logger.info(u'您需要登陆后才能完成这一操作')
+            return redirect_back()
+    return wrapped
+
+
+def active_required(function):
+    @wraps(function)
+    def wrapped(*args, **kwargs):
+        if session.get('logged_in') and session.get('user'):
+            user = session['user']
+            if not user.get('is_active'):
                 logger.info(u'您的账号尚未被激活，请联系管理员或回答验证问题')
-                return redirect_back()
+                return redirect(url_for('account.user', user_id=user['id']))
             return function(*args, **kwargs)
         else:
             logger.info(u'您需要登陆后才能完成这一操作')
@@ -117,15 +135,38 @@ def admin_required(function):
     @wraps(function)
     def wrapped(*args, **kwargs):
         if session.get('logged_in') and session.get('user'):
-            if not session['user'].get('is_active'):
+            user = session['user']
+            if not user.get('is_super_admin'):
+                logger.error_code(logger.PERMISSION_DENIED)
+                return redirect_back()
+            if not user.get('is_active'):
                 logger.info(u'您的账号尚未被激活，请联系管理员或回答验证问题')
-                return redirect_back()
-            if not session['user'].get('is_super_admin'):
-                logger.error(u'您无权完成这一操作, 如有疑问请联系小祈~')
-                return redirect_back()
+                return redirect(url_for('account.user', user_id=user['id']))
             return function(*args, **kwargs)
         else:
             logger.info(u'您需要登陆后才能完成这一操作')
             return redirect_back()
         return function(*args, **kwargs)
+    return wrapped
+
+
+def own_required(function):
+    @wraps(function)
+    def wrapped(user_id):
+        if session.get('logged_in') and session.get('user'):
+            user = dbsession.query(User).get(user_id)
+            if not user:
+                abort(404)
+
+            if session['user']['id'] != user_id:
+                if not session['user']['is_super_admin']:
+                    logger.error_code(logger.PERMISSION_DENIED)
+                    abort(404)
+                elif user.is_super_admin:
+                    logger.error_code(logger.PERMISSION_DENIED)
+                    abort(404)
+        else:
+            logger.info(u'您需要登录后才能完成这一操作')
+            return redirect_back()
+        return function(user)
     return wrapped

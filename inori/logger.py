@@ -27,7 +27,7 @@ class InoriLogger(object):
 
     CODE_TO_MSG_MAP = {
         UNKNOWN_ERROR: u"一些奇怪的错误粗线了！",
-        PERMISSION_DENIED: u"噗噗噗，这可不是你能来的地方",
+        PERMISSION_DENIED: u"您无权访问此链接，如有疑问请联系小祈哦~",
 
         USER_NOT_FOUND: u"你确定这么个人存在嘛？啊？",
         USER_AUTH_FAILED: u"一看就是输错密码了，充满着弱者的气息",

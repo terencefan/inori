@@ -30,7 +30,7 @@ from inori.validator import (
     INT,
     STR,
     validate,
-    login_required,
+    active_required,
     admin_required,
 )
 
@@ -113,7 +113,7 @@ def index():
 
 
 @home.route('/tweet')
-@admin_required
+@active_required
 def tweet():
 
     results = dbsession.query(User, Tweet).\
@@ -134,7 +134,7 @@ def tweet():
 
 
 @home.route('/blog')
-@login_required
+@active_required
 def blog():
 
     bcs = dbsession.query(BlogCategory)

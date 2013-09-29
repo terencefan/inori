@@ -3,8 +3,6 @@
 from flask import Module
 account = Module(__name__)
 
-from sqlalchemy.exc import SQLAlchemyError
-
 from flask import (
     redirect,
     render_template,
@@ -13,31 +11,27 @@ from flask import (
     url_for,
 )
 
+from inori.logger import logger
+
 from inori.models import (
     dbsession,
     User,
 )
 
-from inori.logger import logger
+from inori.utils import (
+    dbcommit,
+    set_user,
+)
+
 from inori.validator import (
     EMAIL,
     PASSWORD,
     STR,
+    OPTIONAL_STR,
     redirect_back,
-    validate
+    validate,
+    own_required,
 )
-
-
-def set_user(user):
-    session['logged_in'] = True
-    session['user'] = {
-        'id': user.id,
-        'email': user.email,
-        'nickname': user.nickname,
-        'is_super_admin': user.is_super_admin,
-        'is_active': user.is_active,
-    }
-    logger.info(user.welcome_info)
 
 
 @account.route('/signup', methods=['POST'])
@@ -54,6 +48,10 @@ def signup():
     password = request.form['password']
     repeat_pwd = request.form['repeat_pwd']
 
+    if len(nickname) < 2:
+        logger.error_code(logger.NICKNAME_IS_TOO_SHORT)
+        return redirect_back()
+
     if password != repeat_pwd:
         logger.error_code(logger.REPEAT_PWD_MISMATCH)
         return redirect_back()
@@ -61,12 +59,7 @@ def signup():
     user = User(email, password, nickname)
     dbsession.add(user)
 
-    try:
-        dbsession.commit()
-    except SQLAlchemyError as se:
-        logger.error_sql(se)
-        return redirect_back()
-
+    dbcommit()
     set_user(user)
     return redirect_back()
 
@@ -105,5 +98,32 @@ def signout():
 
 
 @account.route('/user/<int:user_id>', methods=['GET', 'POST'])
-def user(user_id):
-    return render_template('account/user.html')
+@own_required
+def user(user):
+    dbcommit()
+    return render_template('account/user.html', user=user)
+
+
+@account.route('/edit/<int:user_id>', methods=['GET', 'POST'])
+@validate({
+    'nickname': OPTIONAL_STR,
+    'welcome_info': OPTIONAL_STR,
+})
+@own_required
+def edit(user):
+
+    nickname = request.form.get('nickname')
+    welcome_info = request.form.get('welcome_info')
+
+    if nickname is not None:
+        if len(nickname) < 2:
+            logger.error_code(logger.NICKNAME_IS_TOO_SHORT)
+            return redirect(url_for('account.user', user_id=user.id))
+        user.nickname = nickname
+    if welcome_info is not None:
+        user.welcome_info = welcome_info
+
+    dbcommit()
+    if user.id == session['user']['id']:
+        set_user(user, has_info=False)
+    return redirect(url_for('account.user', user_id=user.id))
