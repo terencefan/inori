@@ -20,6 +20,7 @@ from inori.models import (
 
 from inori.utils import (
     dbcommit,
+    redirect_back,
     set_user,
 )
 
@@ -28,7 +29,6 @@ from inori.validator import (
     PASSWORD,
     STR,
     OPTIONAL_STR,
-    redirect_back,
     validate,
     own_required,
 )
@@ -59,8 +59,10 @@ def signup():
     user = User(email, password, nickname)
     dbsession.add(user)
 
-    dbcommit()
     set_user(user)
+    if user.welcome_info:
+        logger.info(user.welcome_info)
+
     return redirect_back()
 
 
@@ -78,13 +80,15 @@ def signin():
         filter(User.email == account).\
         first()
 
-    if user:
-        if user.authorize(password):
-            set_user(user)
-        else:
-            logger.error_code(logger.USER_AUTH_FAILED)
-    else:
+    if not user:
         logger.error_code(logger.USER_NOT_FOUND)
+
+    if not user.authorize(password):
+        logger.error_code(logger.USER_AUTH_FAILED)
+
+    set_user(user)
+    if user.welcome_info:
+        logger.info(user.welcome_info)
 
     return redirect_back()
 
@@ -125,5 +129,5 @@ def edit(user):
 
     dbcommit()
     if user.id == session['user']['id']:
-        set_user(user, has_info=False)
+        set_user(user)
     return redirect(url_for('account.user', user_id=user.id))

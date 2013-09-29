@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from flask import session
+from flask import (
+    redirect,
+    request,
+    session,
+    url_for,
+)
 
 from sqlalchemy.exc import SQLAlchemyError
 
 from inori.logger import logger
 from inori.models import dbsession
-from inori.validator import redirect_back
 
 
 def dbcommit():
@@ -17,7 +21,14 @@ def dbcommit():
         return redirect_back()
 
 
-def set_user(user, has_info=True):
+def redirect_back():
+    if request.referrer:
+        return redirect(request.referrer)
+    else:
+        return redirect(url_for('home.index'))
+
+
+def set_user(user):
 
     session['logged_in'] = True
     session['user'] = {
@@ -27,5 +38,3 @@ def set_user(user, has_info=True):
         'is_super_admin': user.is_super_admin,
         'is_active': user.is_active,
     }
-    if has_info:
-        logger.info(user.welcome_info)

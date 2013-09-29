@@ -17,6 +17,12 @@ from inori.models import (
     User,
 )
 
+from inori.utils import (
+    dbcommit,
+    redirect_back,
+    set_user,
+)
+
 EMAIL_RE = re.compile('\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*')
 MOBILE_RE = re.compile('1[3|4|5|8]\d{9}')
 PASSWORD_RE = re.compile('[a-zA-Z0-9]{8,15}')
@@ -52,13 +58,6 @@ def func_name(func, name=None, optional=False):
 def optional(formatter):
     func, name, optional = formatter
     return func_name(func, name, True)
-
-
-def redirect_back():
-    if request.referrer:
-        return redirect(request.referrer)
-    else:
-        return redirect(url_for('home.index'))
 
 
 BOOL = func_name(bool)
@@ -109,6 +108,9 @@ def login_required(function):
     @wraps(function)
     def wrapped(*args, **kwargs):
         if session.get('logged_in') and session.get('user'):
+            dbcommit()
+            user = dbsession.query(User).get(session['user']['id'])
+            set_user(user)
             return function(*args, **kwargs)
         else:
             logger.info(u'您需要登陆后才能完成这一操作')
@@ -120,10 +122,12 @@ def active_required(function):
     @wraps(function)
     def wrapped(*args, **kwargs):
         if session.get('logged_in') and session.get('user'):
-            user = session['user']
-            if not user.get('is_active'):
+            dbcommit()
+            user = dbsession.query(User).get(session['user']['id'])
+            set_user(user)
+            if not user.is_active:
                 logger.info(u'您的账号尚未被激活，请联系管理员或回答验证问题')
-                return redirect(url_for('account.user', user_id=user['id']))
+                return redirect(url_for('account.user', user_id=user.id))
             return function(*args, **kwargs)
         else:
             logger.info(u'您需要登陆后才能完成这一操作')
@@ -135,13 +139,15 @@ def admin_required(function):
     @wraps(function)
     def wrapped(*args, **kwargs):
         if session.get('logged_in') and session.get('user'):
-            user = session['user']
-            if not user.get('is_super_admin'):
+            dbcommit()
+            user = dbsession.query(User).get(session['user']['id'])
+            set_user(user)
+            if not user.is_super_admin:
                 logger.error_code(logger.PERMISSION_DENIED)
                 return redirect_back()
-            if not user.get('is_active'):
+            if not user.is_active:
                 logger.info(u'您的账号尚未被激活，请联系管理员或回答验证问题')
-                return redirect(url_for('account.user', user_id=user['id']))
+                return redirect(url_for('account.user', user_id=user.id))
             return function(*args, **kwargs)
         else:
             logger.info(u'您需要登陆后才能完成这一操作')
@@ -154,16 +160,23 @@ def own_required(function):
     @wraps(function)
     def wrapped(user_id):
         if session.get('logged_in') and session.get('user'):
+            dbcommit()
+
+            # 获得当前用户信息
+            cur_user = dbsession.query(User).get(session['user']['id'])
+            set_user(cur_user)
+
+            # 获得目标用户信息
             user = dbsession.query(User).get(user_id)
             if not user:
                 abort(404)
 
-            if session['user']['id'] != user_id:
-                if not session['user']['is_super_admin']:
-                    logger.error_code(logger.PERMISSION_DENIED)
+            if cur_user.id != user_id:
+                # 当前用户不是超级管理员
+                if not cur_user.is_super_admin:
                     abort(404)
+                # 目标用户是超级管理员
                 elif user.is_super_admin:
-                    logger.error_code(logger.PERMISSION_DENIED)
                     abort(404)
         else:
             logger.info(u'您需要登录后才能完成这一操作')
