@@ -15,6 +15,7 @@ setup(
     pacakage_data={},
     install_requires=[
         "celery>=3.0.23",
+        "email>=4.0.2",
         "flask>=0.10.1",
         "redis>=2.8.0",
         "sqlalchemy>=0.8.0",
