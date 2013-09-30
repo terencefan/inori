@@ -6,3 +6,10 @@ mysql_settings = {
     'port': 3306,
     'database': 'inori_dev', # inori_dev, inori_pro
 }
+
+email_settings = {
+    'gmail': {
+        'username': 'username',
+        'password': 'password',
+    },
+}
