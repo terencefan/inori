@@ -7,7 +7,9 @@ from sqlalchemy import (
     Column,
     DateTime,
     Integer,
+    SmallInteger,
     String,
+    Text,
 )
 
 from .database import Base
@@ -34,3 +36,24 @@ class User(Base):
 
     def authorize(self, password):
         return self.password == password
+
+
+class EmailSend(Base):
+    __tablename__ = 'email_send'
+
+    STATUS_NOT_SEND = 0
+    STATUS_SUCCESS = 1
+    STATUS_WAITING = 2
+    STATUS_FAILED = -1
+
+    id = Column(Integer, primary_key=True)
+    to_email = Column(String(30), default=u"")
+    title = Column(String(50), default=u"")
+    content = Column(Text, default=u"")
+    status = Column(SmallInteger, default=0)
+    retry_times = Column(SmallInteger, default=0)
+
+    def __init__(self, to_email, title, content):
+        self.to_email = to_email
+        self.title = title
+        self.content = content

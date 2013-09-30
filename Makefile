@@ -17,3 +17,9 @@ uninstall:
 	cat install.record | xargs rm -rf
 	@echo
 	@echo "Uninstall finished."
+
+start:
+	python manage.py
+
+service:
+	python manage.py service

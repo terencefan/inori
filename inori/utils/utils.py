@@ -10,7 +10,10 @@ from flask import (
 from sqlalchemy.exc import SQLAlchemyError
 
 from inori.logger import logger
-from inori.models import dbsession
+from inori.models import (
+    dbsession,
+    EmailSend,
+)
 
 
 def dbcommit():
@@ -26,6 +29,17 @@ def redirect_back():
         return redirect(request.referrer)
     else:
         return redirect(url_for('home.index'))
+
+
+def send_email(to_email, title, content):
+    email_send = EmailSend(to_email, title, content)
+    dbsession.add(email_send)
+
+    try:
+        dbsession.commit()
+        return True
+    except:
+        return False
 
 
 def set_user(user):

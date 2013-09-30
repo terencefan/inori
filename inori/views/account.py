@@ -22,6 +22,7 @@ from inori.utils import (
     dbcommit,
     redirect_back,
     set_user,
+    send_email,
 )
 
 from inori.validator import (
@@ -87,6 +88,7 @@ def signin():
         logger.error_code(logger.USER_AUTH_FAILED)
 
     set_user(user)
+    send_email(user.email, u'测试邮件', u'请不要回复')
     if user.welcome_info:
         logger.info(user.welcome_info)
 
