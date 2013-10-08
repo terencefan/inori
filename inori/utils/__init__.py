@@ -1,3 +1,3 @@
 from .utils import *
 
-from .mail import GMail
+from .mail_utils import GMail

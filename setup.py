@@ -18,6 +18,7 @@ setup(
         "email>=4.0.2",
         "flask>=0.10.1",
         "redis>=2.8.0",
+        "rsa>=3.1.2",
         "sqlalchemy>=0.8.0",
     ]
 )

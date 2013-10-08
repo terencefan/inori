@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import base64
+import json
 
 from flask import (
     redirect,
@@ -14,6 +16,9 @@ from inori.models import (
     dbsession,
     EmailSend,
 )
+
+
+from rsa_utils import rsa_helper
 
 
 def dbcommit():
@@ -52,3 +57,19 @@ def set_user(user):
         'is_super_admin': user.is_super_admin,
         'is_active': user.is_active,
     }
+
+
+def pack_params(**kwargs):
+    params = {}
+    for key, val in kwargs.items():
+        params[key] = val
+
+    message = json.dumps(params)
+    message = rsa_helper.encrypt(message)
+    return base64.encodestring(message)
+
+
+def unpack_params(message):
+    message = base64.decodestring(message)
+    message = rsa_helper.decrypt(message)
+    return json.loads(message)

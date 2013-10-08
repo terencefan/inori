@@ -52,6 +52,7 @@ class EmailSend(Base):
     content = Column(Text, default=u"")
     status = Column(SmallInteger, default=0)
     retry_times = Column(SmallInteger, default=0)
+    created_at = Column(DateTime)
 
     def __init__(self, to_email, title, content):
         self.to_email = to_email

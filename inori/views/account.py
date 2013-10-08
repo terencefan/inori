@@ -23,6 +23,7 @@ from inori.utils import (
     redirect_back,
     set_user,
     send_email,
+    pack_params,
 )
 
 from inori.validator import (
@@ -133,3 +134,11 @@ def edit(user):
     if user.id == session['user']['id']:
         set_user(user)
     return redirect(url_for('account.user', user_id=user.id))
+
+
+@account.route('/active/send/<int:user_id>', methods=['GET', 'POST'])
+@own_required
+def active_send(user):
+    string = pack_params(id=user.id, email=user.email)
+    logger.info(string)
+    return redirect_back()
