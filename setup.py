@@ -5,9 +5,9 @@ ez_setup.use_setuptools()
 from setuptools import setup, find_packages
 
 setup(
-    name="sakura",
+    name="inori",
     version="1.0",
-    description="stdrickforce's ubuntu rapid configuration solution",
+    description="stdrickforce's home page",
     long_description=open("README.md").read(),
     author="[STD]Rick_Force",
     author_email="stdrickforce@gmail.com",

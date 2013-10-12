@@ -32,5 +32,3 @@ if __name__ == '__main__':
     prifile = open('rsa.pri', 'w+')
     prifile.write(pri)
     prifile.close()
-
-rsa_helper = RsaHelper()

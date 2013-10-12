@@ -18,7 +18,7 @@ from inori.models import (
 )
 
 
-from rsa_utils import rsa_helper
+from rsa_utils import RsaHelper
 
 
 def dbcommit():
@@ -64,12 +64,14 @@ def pack_params(**kwargs):
     for key, val in kwargs.items():
         params[key] = val
 
+    rsa_helper = RsaHelper()
     message = json.dumps(params)
     message = rsa_helper.encrypt(message)
     return base64.encodestring(message)
 
 
 def unpack_params(message):
+    rsa_helper = RsaHelper()
     message = base64.decodestring(message)
     message = rsa_helper.decrypt(message)
     return json.loads(message)
