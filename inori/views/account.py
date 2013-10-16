@@ -87,6 +87,7 @@ def signin():
 
     if not user.authorize(password):
         logger.error_code(logger.USER_AUTH_FAILED)
+        return redirect_back()
 
     set_user(user)
     send_email(user.email, u'测试邮件', u'请不要回复')
