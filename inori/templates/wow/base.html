@@ -1,0 +1,34 @@
+{% extends "/base.html" %}
+
+{% block title %}
+    围攻奥格瑞玛
+{% endblock %}
+
+{% block javascript %}
+    $("#label_wow").addClass("active");
+    {% block javascript_1 %}{% endblock %}
+{% endblock %}
+
+{% block jumbotran %}
+<!--
+    <div class="jumbotron">
+        <h1>白兔糖</h1>
+        <p>小祈会拯救大家的！</p>
+        <p><a class="btn btn-primary btn-lg" role="button">了解更多（但不是现在）</a></p>
+    </div>
+-->
+{% endblock %}
+
+{% block index_active %}
+    class = "active"
+{% endblock %}
+
+{% block sidebar %}
+<div class="well" id="sidenavbar" style="margin: 20px 0">
+    <ul class="nav nav-pills nav-stacked">
+        <li id="wow_index"><a href="{{ url_for('home.index') }}">首页</a></li>
+        <li id="wow_1"><a href="{{ url_for('wow.index') }}">首页</a></li>
+        <li id="wow_2"><a href="{{ url_for('wow.index') }}">首页</a></li>
+    </ul>
+</div>
+{% endblock %}

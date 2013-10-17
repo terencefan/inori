@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block javascript %}
-var home_active = "{% block home_active %}{% endblock %}";
-$("#" + home_active).addClass("active");
+    $("#label_index").addClass("active");
+    {% block javascript_1 %}{% endblock %}
 {% endblock %}
 
 {% block jumbotran %}

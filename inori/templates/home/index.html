@@ -1,6 +1,6 @@
 {% extends "/home/base.html" %}
 
-{% block javascript %}
+{% block javascript_1 %}
     $("#home_index").addClass("active");
     {% for area in var.areas %}
     $("#text_{{ area.postfix }}").pin({

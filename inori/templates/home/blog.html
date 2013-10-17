@@ -1,6 +1,8 @@
 {% extends "/home/base.html" %}
 
-{% block home_active %}home_blog{% endblock %}
+{% block javascript_1 %}
+    $("#home_blog").addClass("active");
+{% endblock %}
 
 {% block content %}
 {% if session.logged_in and session.user.is_super_admin %}
