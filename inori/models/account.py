@@ -43,7 +43,6 @@ class EmailSend(Base):
 
     STATUS_NOT_SEND = 0
     STATUS_SUCCESS = 1
-    STATUS_WAITING = 2
     STATUS_FAILED = -1
 
     id = Column(Integer, primary_key=True)
@@ -51,7 +50,7 @@ class EmailSend(Base):
     title = Column(String(50), default=u"")
     content = Column(Text, default=u"")
     status = Column(SmallInteger, default=0)
-    retry_times = Column(SmallInteger, default=0)
+    remark = Column(String(255), default=u"")
     created_at = Column(DateTime)
 
     def __init__(self, to_email, title, content):
