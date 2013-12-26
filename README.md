@@ -1,0 +1,4 @@
+inori
+=====
+
+stdrickforce core service
