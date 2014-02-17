@@ -24,6 +24,8 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
   print ''
   print 'Functions:'
   print '  bool ping()'
+  print '  void send(EmailAddress sender, EmailAddress receiver, string title, string content)'
+  print '  void process_send(i32 email_id)'
   print ''
   sys.exit(0)
 
@@ -80,6 +82,18 @@ if cmd == 'ping':
     print 'ping requires 0 args'
     sys.exit(1)
   pp.pprint(client.ping())
+
+elif cmd == 'send':
+  if len(args) != 4:
+    print 'send requires 4 args'
+    sys.exit(1)
+  pp.pprint(client.send(eval(args[0]),eval(args[1]),args[2],args[3],))
+
+elif cmd == 'process_send':
+  if len(args) != 1:
+    print 'process_send requires 1 args'
+    sys.exit(1)
+  pp.pprint(client.process_send(eval(args[0]),))
 
 else:
   print 'Unrecognized method %s' % cmd
