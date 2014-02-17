@@ -37,6 +37,13 @@ class Iface(object):
     """
     pass
 
+  def set_messager(self, name):
+    """
+    Parameters:
+     - name
+    """
+    pass
+
   def process_send(self, email_id):
     """
     Inner APIs
@@ -131,6 +138,40 @@ class Client(Iface):
       raise result.unknown_exception
     return
 
+  def set_messager(self, name):
+    """
+    Parameters:
+     - name
+    """
+    self.send_set_messager(name)
+    self.recv_set_messager()
+
+  def send_set_messager(self, name):
+    self._oprot.writeMessageBegin('set_messager', TMessageType.CALL, self._seqid)
+    args = set_messager_args()
+    args.name = name
+    args.write(self._oprot)
+    self._oprot.writeMessageEnd()
+    self._oprot.trans.flush()
+
+  def recv_set_messager(self):
+    (fname, mtype, rseqid) = self._iprot.readMessageBegin()
+    if mtype == TMessageType.EXCEPTION:
+      x = TApplicationException()
+      x.read(self._iprot)
+      self._iprot.readMessageEnd()
+      raise x
+    result = set_messager_result()
+    result.read(self._iprot)
+    self._iprot.readMessageEnd()
+    if result.user_exception is not None:
+      raise result.user_exception
+    if result.system_exception is not None:
+      raise result.system_exception
+    if result.unknown_exception is not None:
+      raise result.unknown_exception
+    return
+
   def process_send(self, email_id):
     """
     Inner APIs
@@ -174,6 +215,7 @@ class Processor(Iface, TProcessor):
     self._processMap = {}
     self._processMap["ping"] = Processor.process_ping
     self._processMap["send"] = Processor.process_send
+    self._processMap["set_messager"] = Processor.process_set_messager
     self._processMap["process_send"] = Processor.process_process_send
 
   def process(self, iprot, oprot):
@@ -223,6 +265,24 @@ class Processor(Iface, TProcessor):
     except EMSUnknownException, unknown_exception:
       result.unknown_exception = unknown_exception
     oprot.writeMessageBegin("send", TMessageType.REPLY, seqid)
+    result.write(oprot)
+    oprot.writeMessageEnd()
+    oprot.trans.flush()
+
+  def process_set_messager(self, seqid, iprot, oprot):
+    args = set_messager_args()
+    args.read(iprot)
+    iprot.readMessageEnd()
+    result = set_messager_result()
+    try:
+      self._handler.set_messager(args.name)
+    except EMSUserException, user_exception:
+      result.user_exception = user_exception
+    except EMSSystemException, system_exception:
+      result.system_exception = system_exception
+    except EMSUnknownException, unknown_exception:
+      result.unknown_exception = unknown_exception
+    oprot.writeMessageBegin("set_messager", TMessageType.REPLY, seqid)
     result.write(oprot)
     oprot.writeMessageEnd()
     oprot.trans.flush()
@@ -541,6 +601,153 @@ class send_result(object):
       oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
       return
     oprot.writeStructBegin('send_result')
+    if self.user_exception is not None:
+      oprot.writeFieldBegin('user_exception', TType.STRUCT, 1)
+      self.user_exception.write(oprot)
+      oprot.writeFieldEnd()
+    if self.system_exception is not None:
+      oprot.writeFieldBegin('system_exception', TType.STRUCT, 2)
+      self.system_exception.write(oprot)
+      oprot.writeFieldEnd()
+    if self.unknown_exception is not None:
+      oprot.writeFieldBegin('unknown_exception', TType.STRUCT, 3)
+      self.unknown_exception.write(oprot)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def validate(self):
+    return
+
+
+  def __repr__(self):
+    L = ['%s=%r' % (key, value)
+      for key, value in self.__dict__.iteritems()]
+    return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+  def __eq__(self, other):
+    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return not (self == other)
+
+class set_messager_args(object):
+  """
+  Attributes:
+   - name
+  """
+
+  thrift_spec = (
+    None, # 0
+    (1, TType.STRING, 'name', None, None, ), # 1
+  )
+
+  def __init__(self, name=None,):
+    self.name = name
+
+  def read(self, iprot):
+    if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
+      fastbinary.decode_binary(self, iprot.trans, (self.__class__, self.thrift_spec))
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRING:
+          self.name = iprot.readString().decode('utf-8')
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
+      oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
+      return
+    oprot.writeStructBegin('set_messager_args')
+    if self.name is not None:
+      oprot.writeFieldBegin('name', TType.STRING, 1)
+      oprot.writeString(self.name.encode('utf-8'))
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def validate(self):
+    return
+
+
+  def __repr__(self):
+    L = ['%s=%r' % (key, value)
+      for key, value in self.__dict__.iteritems()]
+    return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+  def __eq__(self, other):
+    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return not (self == other)
+
+class set_messager_result(object):
+  """
+  Attributes:
+   - user_exception
+   - system_exception
+   - unknown_exception
+  """
+
+  thrift_spec = (
+    None, # 0
+    (1, TType.STRUCT, 'user_exception', (EMSUserException, EMSUserException.thrift_spec), None, ), # 1
+    (2, TType.STRUCT, 'system_exception', (EMSSystemException, EMSSystemException.thrift_spec), None, ), # 2
+    (3, TType.STRUCT, 'unknown_exception', (EMSUnknownException, EMSUnknownException.thrift_spec), None, ), # 3
+  )
+
+  def __init__(self, user_exception=None, system_exception=None, unknown_exception=None,):
+    self.user_exception = user_exception
+    self.system_exception = system_exception
+    self.unknown_exception = unknown_exception
+
+  def read(self, iprot):
+    if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
+      fastbinary.decode_binary(self, iprot.trans, (self.__class__, self.thrift_spec))
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRUCT:
+          self.user_exception = EMSUserException()
+          self.user_exception.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.STRUCT:
+          self.system_exception = EMSSystemException()
+          self.system_exception.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRUCT:
+          self.unknown_exception = EMSUnknownException()
+          self.unknown_exception.read(iprot)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
+      oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
+      return
+    oprot.writeStructBegin('set_messager_result')
     if self.user_exception is not None:
       oprot.writeFieldBegin('user_exception', TType.STRUCT, 1)
       self.user_exception.write(oprot)
