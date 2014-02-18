@@ -2,13 +2,21 @@
 
 import logging
 
-logger = logging.getLogger(__name__)
+from sqlalchemy.exc import SQLAlchemyError
 
 from inori.ems.models import (
+    DBSession,
     EmailSend,
 )
 
+from inori.ems.exc import (
+    EMSErrorCode,
+    raise_system_exc,
+)
+
 from . import messager
+
+logger = logging.getLogger(__name__)
 
 
 def ping():
@@ -16,19 +24,25 @@ def ping():
 
 
 def send(sender, receiver, title, content):
-    email = EmailSend(
+    session = DBSession()
+
+    email_send = EmailSend(
         sender=sender,
         receiver=receiver,
         title=title,
         content=content,
     )
-    return process_send(email)
+    session.add(email_send)
+
+    session.flush()
+    # print email_send.id
+
+    try:
+        session.commit()
+    except SQLAlchemyError as e:
+        session.rollback()
+        raise_system_exc(EMSErrorCode.DATABASE_ERROR, repr(e))
 
 
 def set_messager(name):
     messager.set_messager(name)
-
-
-def process_send(email):
-    messager.send(
-        email.sender, email.receiver, email.title, email.content)
