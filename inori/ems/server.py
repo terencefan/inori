@@ -8,6 +8,7 @@ This module provides a simple server for service serving.
 """
 
 import logging
+logging.basicConfig(level=logging.INFO)
 
 from inori.core.server import make_gevent_pool_server
 

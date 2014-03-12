@@ -2,6 +2,40 @@
 
 ENV = "dev"
 
+LOGGING = {
+    'version': 1,
+
+    'disable_existing_loggers': True,
+
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+
+    'loggers': {
+        'inori': {
+            'handlers': ['console'],
+            'propagate': False,
+            'level': 'INFO',
+        },
+    },
+
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'general',
+        },
+    },
+
+    'formatters': {
+        'general': {
+            'format': "%(asctime)s %(levelname)-6s [%(name)s][%(process)d] "
+                      "%(message)s"
+        },
+    }
+}
+
 SERVICES = [
     "inori.ems",
 ]
