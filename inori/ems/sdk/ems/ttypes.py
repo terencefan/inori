@@ -21,16 +21,19 @@ class EMSErrorCode(object):
   Exceptions
   """
   UNKNOWN_ERROR = 0
-  DATABASE_ERROR = 1
+  SEND_TIMEOUT = 1
+  DATABASE_ERROR = 2
 
   _VALUES_TO_NAMES = {
     0: "UNKNOWN_ERROR",
-    1: "DATABASE_ERROR",
+    1: "SEND_TIMEOUT",
+    2: "DATABASE_ERROR",
   }
 
   _NAMES_TO_VALUES = {
     "UNKNOWN_ERROR": 0,
-    "DATABASE_ERROR": 1,
+    "SEND_TIMEOUT": 1,
+    "DATABASE_ERROR": 2,
   }
 
 

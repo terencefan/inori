@@ -14,6 +14,7 @@ from .sdk.ems.ttypes import (
 )
 
 TRANSLATIONS = {
+    EMSErrorCode.SEND_TIMEOUT: u"email发送超时",
 }
 
 

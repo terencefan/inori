@@ -4,6 +4,8 @@ import logging
 
 from .client import client
 
+from .models import DBSession
+
 from .sdk.ems.constants import (
     EMSUserException,
     EMSSystemException,
@@ -30,6 +32,8 @@ def main():
         timeout=3*1000,
 
         logger=logging.getLogger(NAME),
+
+        dbsession=DBSession,
 
         user_exc=EMSUserException,
         system_exc=EMSSystemException,

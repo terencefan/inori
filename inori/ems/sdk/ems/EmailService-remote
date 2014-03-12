@@ -25,6 +25,7 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
   print 'Functions:'
   print '  bool ping()'
   print '  void send(EmailAddress sender, EmailAddress receiver, string title, string content)'
+  print '  void set_messager(string name)'
   print '  void process_send(i32 email_id)'
   print ''
   sys.exit(0)
@@ -88,6 +89,12 @@ elif cmd == 'send':
     print 'send requires 4 args'
     sys.exit(1)
   pp.pprint(client.send(eval(args[0]),eval(args[1]),args[2],args[3],))
+
+elif cmd == 'set_messager':
+  if len(args) != 1:
+    print 'set_messager requires 1 args'
+    sys.exit(1)
+  pp.pprint(client.set_messager(args[0],))
 
 elif cmd == 'process_send':
   if len(args) != 1:
