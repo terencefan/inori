@@ -2,7 +2,24 @@
 
 import contextlib
 
+from thrift.transport import TSocket
+from thrift.transport import TTransport
+from thrift.protocol import TBinaryProtocol
+
 dispatchers = {}
+
+
+@contextlib.contextmanager
+def make_client(service, host, port, timeout=3):
+    try:
+        transport = TSocket.TSocket(host, port)
+        transport.setTimeout(timeout * 1000)
+        transport = TTransport.TBufferedTransport(transport)
+        protocol = TBinaryProtocol.TBinaryProtocolAccelerated(transport)
+        transport.open()
+        yield service.Client(protocol)
+    finally:
+        transport.close()
 
 
 @contextlib.contextmanager
