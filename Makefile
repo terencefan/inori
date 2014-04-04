@@ -5,7 +5,15 @@ help:
 	@echo '   make install    install as a package '
 	@echo '   make uninstall  uninstall inori      '
 
-install:
+requirements:
+	pip install -r requirements.txt
+
+develop: requirements
+	python setup.py develop
+	@echo
+	@echo "Install finished"
+
+install: requirements
 	python setup.py install --record install.record
 	@echo
 	@echo "Install finished."
@@ -14,14 +22,3 @@ uninstall:
 	cat install.record | xargs rm -rf
 	@echo
 	@echo "Uninstall finished."
-
-setup:
-	python manage.py build
-	@echo
-	@echo "Build finished."
-
-start:
-	python manage.py
-
-service:
-	python manage.py service

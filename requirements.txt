@@ -1,0 +1,6 @@
+celery>=3.0.23
+flask>=0.10.1
+redis>=2.8.0
+requests>=2.0.0
+rsa>=3.1.2
+sqlalchemy>=0.8.0

@@ -36,17 +36,6 @@ def redirect_back():
         return redirect(url_for('home.index'))
 
 
-def send_email(to_email, title, content):
-    email_send = EmailSend(to_email, title, content)
-    dbsession.add(email_send)
-
-    try:
-        dbsession.commit()
-        return True
-    except:
-        return False
-
-
 def set_user(user):
 
     session['logged_in'] = True
