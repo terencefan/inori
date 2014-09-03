@@ -16,8 +16,6 @@ from flask import (
 )
 
 from inori.models import (
-    dbsession,
-    # models
     Blog,
     BlogCategory,
     Tweet,

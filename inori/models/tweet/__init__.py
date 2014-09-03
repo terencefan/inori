@@ -7,10 +7,13 @@ from sqlalchemy import (
     String,
 )
 
-from .database import Base
+from inori.models import (
+    Base,
+    UIDBase,
+)
 
 
-class Tweet(Base):
+class Tweet(Base, UIDBase):
     __tablename__ = 'tweet'
 
     id = Column(Integer, primary_key=True)
