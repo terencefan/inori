@@ -10,10 +10,13 @@ from sqlalchemy import (
     String,
 )
 
-from inori.models import Base
+from inori.models import (
+    Base,
+    UIDBase,
+)
 
 
-class User(Base):
+class User(Base, UIDBase):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)

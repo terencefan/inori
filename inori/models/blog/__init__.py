@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from .category import BlogCategory
+
 from sqlalchemy import (
     Column,
     DateTime,
@@ -8,10 +10,13 @@ from sqlalchemy import (
     Text,
 )
 
-from inori.models import Base
+from inori.models import (
+    Base,
+    UIDBase,
+)
 
 
-class Blog(Base):
+class Blog(Base, UIDBase):
     __tablename__ = 'blog'
 
     id = Column(Integer, primary_key=True)
@@ -25,3 +30,8 @@ class Blog(Base):
         self.user_id = user_id
         self.title = title
         self.content = content
+
+    @property
+    def category_name(self):
+        category = BlogCategory.get(self.category_id)
+        return category.name if category else u'没有分类呢'

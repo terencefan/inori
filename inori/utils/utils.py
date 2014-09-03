@@ -9,24 +9,7 @@ from flask import (
     url_for,
 )
 
-from sqlalchemy.exc import SQLAlchemyError
-
-from inori.logger import logger
-from inori.models import (
-    dbsession,
-    EmailSend,
-)
-
-
 from rsa_utils import RsaHelper
-
-
-def dbcommit():
-    try:
-        dbsession.commit()
-    except SQLAlchemyError as se:
-        logger.error_sql(se)
-        return redirect_back()
 
 
 def redirect_back():

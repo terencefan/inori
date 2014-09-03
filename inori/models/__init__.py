@@ -22,5 +22,30 @@ Base = declarative_base()
 Base.query = DBSession.query_property()
 
 
-def init_db():
+class UIDBase(object):
+
+    @classmethod
+    def get(clazz, uid):
+        return DBSession().query(clazz).get(uid)
+
+    @classmethod
+    def mget(clazz, uids):
+        return DBSession().query(clazz).filter(clazz.id.in_(uids))
+
+
+if __name__ == '__main__':
     Base.metadata.create_all(bind=engine)
+
+
+from user import (
+    User,
+)
+
+from blog import (
+    Blog,
+    BlogCategory,
+)
+
+from tweet import (
+    Tweet,
+)
