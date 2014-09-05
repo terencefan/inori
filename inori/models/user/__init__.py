@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import hashlib
+
 from sqlalchemy import (
+    BigInteger,
     Boolean,
     Column,
     DateTime,
@@ -19,6 +22,7 @@ class User(Base, UIDBase):
 
     id = Column(Integer, primary_key=True)
     email = Column(String(64), default=u'')
+    mobile = Column(BigInteger)
     password = Column(String(64), default=u'')
     nickname = Column(String(20), default=u'')
     is_super_admin = Column(Boolean, default=False)
@@ -28,9 +32,10 @@ class User(Base, UIDBase):
 
     def __init__(self, email, password=None, nickname=u''):
         self.email = email
-        self.password = password
+        password = password or '123456'
+        self.password = hashlib.sha256(password).hexdigest()
         self.nickname = nickname
         self.welcome_info = u"欢迎，{}".format(nickname)
 
     def authorize(self, password):
-        return self.password == password
+        return self.password == hashlib.sha256(password).hexdigest()

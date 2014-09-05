@@ -5,8 +5,6 @@ home = Module(__name__)
 
 from datetime import datetime, timedelta
 
-from sqlalchemy.exc import SQLAlchemyError
-
 from flask import (
     redirect,
     render_template,
@@ -16,13 +14,12 @@ from flask import (
 )
 
 from inori.models import (
+    DBSession,
     Blog,
     BlogCategory,
     Tweet,
     User,
 )
-
-from inori.logger import logger
 
 from inori.validator import (
     INT,
@@ -37,7 +34,7 @@ def tweet_items(now, hour_s, hour_t):
     time_s = now - timedelta(hours=hour_s)
     time_t = now - timedelta(hours=hour_t)
 
-    results = dbsession.query(User, Tweet).\
+    results = DBSession().query(User, Tweet).\
         filter(User.id == Tweet.user_id).\
         filter(Tweet.created_at.between(time_t, time_s))
 
@@ -55,7 +52,7 @@ def blog_items(now, hour_s, hour_t):
     time_s = now - timedelta(hours=hour_s)
     time_t = now - timedelta(hours=hour_t)
 
-    results = dbsession.query(User, Blog).\
+    results = DBSession().query(User, Blog).\
         filter(User.id == Blog.user_id).\
         filter(Blog.created_at.between(time_t, time_s))
 
@@ -114,7 +111,7 @@ def index():
 @active_required
 def tweet():
 
-    results = dbsession.query(User, Tweet).\
+    results = DBSession().query(User, Tweet).\
         filter(User.id == Tweet.user_id).\
         order_by(Tweet.created_at.desc())
 
@@ -135,8 +132,8 @@ def tweet():
 @active_required
 def blog():
 
-    bcs = dbsession.query(BlogCategory)
-    results = dbsession.query(User, Blog).\
+    bcs = DBSession().query(BlogCategory)
+    results = DBSession().query(User, Blog).\
         filter(User.id == Blog.user_id).\
         order_by(Blog.created_at.desc())
 
@@ -162,20 +159,7 @@ def blog():
 def add_tweet():
     user_id = session['user']['id']
     content = request.form['content']
-
-    if not content:
-        logger.error_code(logger.TWEET_IS_TOO_SHORT)
-        return redirect(url_for('tweet'))
-
-    tweet = Tweet(user_id, content)
-
-    dbsession.add(tweet)
-
-    try:
-        dbsession.commit()
-    except SQLAlchemyError as se:
-        logger.error_sql(se)
-
+    print user_id, content
     return redirect(url_for('tweet'))
 
 
@@ -191,35 +175,7 @@ def add_blog():
     title = request.form['title']
     blog_category_id = request.form['blog_category_id']
     content = request.form['content']
-
-    bc = dbsession.query(BlogCategory).get(blog_category_id)
-
-    if not bc:
-        logger.error_code(logger.BLOG_CATEGORY_NOT_FOUND)
-        return redirect(url_for('blog'))
-
-    if not title:
-        logger.error_code(logger.BLOG_TITLE_IS_TOO_SHORT)
-        return redirect(url_for('blog'))
-
-    if len(content) < 15:
-        logger.error_code(logger.BLOG_CONTENT_IS_TOO_SHORT)
-        return redirect(url_for('blog'))
-
-    blog = Blog(
-        user_id=user_id,
-        blog_category_name=bc.name,
-        title=title,
-        content=content,
-    )
-
-    dbsession.add(blog)
-
-    try:
-        dbsession.commit()
-    except SQLAlchemyError as se:
-        logger.error_sql(se)
-
+    print user_id, title, blog_category_id, content
     return redirect(url_for('blog'))
 
 
@@ -230,18 +186,5 @@ def add_blog():
 })
 def add_blog_category():
     name = request.form['name']
-
-    if not name:
-        logger.error_code(logger.BLOG_CATEGORY_NAME_IS_TOO_SHORT)
-        return redirect(url_for('blog'))
-
-    blog_category = BlogCategory(name)
-
-    dbsession.add(blog_category)
-
-    try:
-        dbsession.commit()
-    except SQLAlchemyError as se:
-        logger.error_sql(se)
-
+    print name
     return redirect(url_for('blog'))
