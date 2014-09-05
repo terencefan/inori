@@ -9,36 +9,20 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-            $._messengerDefaults = {
-extraClasses: 'messenger-fixed messenger-theme-future messenger-on-bottom'
-}
+        {% with infos = get_flashed_messages(category_filter=["info"]) %}
+        {% for info in infos %}
+        showInfo(info);
+        {% endfor %}
+        {% endwith %}
 
-{% with infos = get_flashed_messages(category_filter=["info"]) %}
-{% for info in infos %}
-$.globalMessenger().post({
-message: "{{ info }}",
-type: 'info',
-showCloseButton: true,
-});
-{% endfor %}
-{% endwith %}
+        {% with errors = get_flashed_messages(category_filter=["error"]) %}
+        {% for error in errors %}
+        showError(info);
+        {% endfor %}
+        {% endwith %}
 
-$._messengerDefaults = {
-extraClasses: 'messenger-fixed messenger-theme-future messenger-on-top'
-}
-
-{% with errors = get_flashed_messages(category_filter=["error"]) %}
-{% for error in errors %}
-$.globalMessenger().post({
-message: "{{ error }}",
-type: 'error',
-showCloseButton: true,
-});
-{% endfor %}
-{% endwith %}
-
-{% block javascript %}{% endblock %}
-});
+        {% block javascript %}{% endblock %}
+    });
 </script>
 {% endblock %}
 
