@@ -1,38 +1,25 @@
-{% extends "/base.html" %}
+{% extends "base/base.html" %}
 
-{% block title %}
-    小祈和小翼的储藏室
-{% endblock %}
-
-{% block javascript %}
-    $("#label_index").addClass("active");
-    {% block javascript_1 %}{% endblock %}
-{% endblock %}
-
-{% block jumbotran %}
-<!--
-    <div class="jumbotron">
-        <h1>白兔糖</h1>
-        <p>小祈会拯救大家的！</p>
-        <p><a class="btn btn-primary btn-lg" role="button">了解更多（但不是现在）</a></p>
-    </div>
--->
-{% endblock %}
-
-{% block index_active %}
-    class = "active"
+{% block source %}
+<script>
+    $(document).ready(function(){
+        $('#label_index').addClass('active');
+    });
+</script>
+{% block home_source %}{% endblock %}
 {% endblock %}
 
 {% block sidebar %}
+<img id="avatar" src="/static/avatar.jpg" class="img-responsive">
 <div class="well">
-    <img src="/static/avatar.jpg" class="img-rounded img-responsive">
     <h3>风之小祈</h3>
     <address>
         <strong>Eleme, Inc.</strong><br>
         <abbr title="Phone">15216709049</abbr><br>
         <a href="mailto:stdrickforce@gmail.com">stdrickforce@gmail.com</a>
+    </address>
 </div>
-<div class="well" id="sidenavbar" style="margin: 20px 0">
+<div id="sidenavbar" style="margin: 20px 0">
     <ul class="nav nav-pills nav-stacked">
         <li id="home_index"><a href="{{ url_for('home.index') }}">全部动态</a></li>
         <li id="home_tweet"><a href="{{ url_for('home.tweet') }}">状态</a></li>
