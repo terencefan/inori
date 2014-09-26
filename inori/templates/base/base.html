@@ -3,6 +3,32 @@
 {% block head %}
 <title>{% block title %}小祈和小翼的储藏室{% endblock %}</title>
 
+<!-- Jquery -->
+<script src="/static/components/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap  -->
+<link rel="stylesheet" href="/static/components/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/components/bootstrap/dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="/static/components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css">
+<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script src="/static/js/bootstrap-switch.min.js"></script>
+
+<!-- Messenger -->
+<link rel="stylesheet" href="/static/components/messenger/build/css/messenger.css">
+<link rel="stylesheet" href="/static/components/messenger/build/css/messenger-theme-future.css">
+<script src="/static/components/messenger/build/js/messenger.min.js"></script>
+
+<!-- CkEditor -->
+<script src="/static/components/ckeditor/ckeditor.js"></script>
+
+<!-- Inori -->
+<link rel="stylesheet/less" href="/static/less/inori.less">
+<script src="/static/js/inori.js"></script>
+
+<!-- Lesscss -->
+<script src="/static/components/less/dist/less-1.7.5.min.js"></script>
+
+
 <script type="text/javascript">
     $(document).ready(function() {
         {% with infos = get_flashed_messages(category_filter=["info"]) %}
