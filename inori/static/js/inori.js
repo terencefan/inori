@@ -19,3 +19,26 @@ function showError(message) {
     showCloseButton: true,
   });
 }
+
+angular.module('inori', [])
+.controller('navbarController', [
+  '$scope',
+  '$http',
+  function($scope, $http) {
+    console.log('navbarController');
+  }
+])
+.controller('containerController', [
+  '$scope',
+  '$http',
+  function($scope, $http) {
+    console.log('containerController');
+  }
+])
+.controller('indexController', [
+  '$scope',
+  '$http',
+  function($scope, $http) {
+    console.log('indexController');
+  }
+])

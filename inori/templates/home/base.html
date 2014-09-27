@@ -1,29 +1,26 @@
 {% extends "base/base.html" %}
 
 {% block source %}
-<script>
-    $(document).ready(function(){
-        $('#label_index').addClass('active');
-    });
-</script>
-{% block home_source %}{% endblock %}
 {% endblock %}
 
-{% block sidebar %}
-<img id="avatar" src="/static/image/avatar.jpg" class="img-responsive">
-<div class="well">
-    <h3>风之小祈</h3>
-    <address>
-        <strong>Eleme, Inc.</strong><br>
-        <abbr title="Phone">15216709049</abbr><br>
-        <a href="mailto:stdrickforce@gmail.com">stdrickforce@gmail.com</a>
-    </address>
-</div>
-<div id="sidenavbar" style="margin: 20px 0">
-    <ul class="nav nav-pills nav-stacked">
-        <li id="home_index"><a href="{{ url_for('home.index') }}">全部动态</a></li>
-        <li id="home_tweet"><a href="{{ url_for('home.tweet') }}">状态</a></li>
-        <li id="home_blog"><a href="{{ url_for('home.blog') }}">博文</a></li>
-    </ul>
+{% block container %}
+<div class="row" ng-controller="indexController">
+    <div class="col-md-3">
+        <div class="well">
+            <h3>风之小祈</h3>
+            <address>
+                <strong>Eleme, Inc.</strong><br>
+                <abbr title="Phone">15216709049</abbr><br>
+                <a href="mailto:stdrickforce@gmail.com">stdrickforce@gmail.com</a>
+            </address>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <ul class="nav nav-pills nav-justified" role="tablist">
+            <li role="presentation" class="active"><a href="#">Timeline</a></li>
+            <li role="presentation"><a href="#">Broadcast</a></li>
+            <li role="presentation"><a href="#">Contact Me</a></li>
+        </ul>
+    </div>
 </div>
 {% endblock %}
