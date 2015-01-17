@@ -6,13 +6,10 @@ from sqlalchemy import (
     String,
 )
 
-from inori.models import (
-    Base,
-    UIDBase,
-)
+from inori.models import Base
 
 
-class BlogCategory(Base, UIDBase):
+class BlogCategory(Base):
     __tablename__ = 'blog_category'
 
     id = Column(Integer, primary_key=True)

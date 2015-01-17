@@ -7,7 +7,6 @@ from flask import (
 
 from functools import wraps
 
-from inori.logger import logger
 from inori.utils import redirect_back
 
 EMAIL_RE = re.compile('\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*')
@@ -73,7 +72,6 @@ def validate(validators):
             missing_params = required - request_params
 
             for param in missing_params:
-                logger.error(u'缺少参数{}'.format(param))
                 has_error = True
 
             for key, val in request.form.items():
@@ -81,7 +79,6 @@ def validate(validators):
                     continue
                 func, name, optional = validators.get(key)
                 if not check(func, val):
-                    logger.error_format(key)
                     has_error = True
 
             if has_error:

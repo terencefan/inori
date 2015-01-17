@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .category import BlogCategory
+from .blog_category import BlogCategory
 
 from sqlalchemy import (
     Column,
@@ -12,11 +12,10 @@ from sqlalchemy import (
 
 from inori.models import (
     Base,
-    UIDBase,
 )
 
 
-class Blog(Base, UIDBase):
+class Blog(Base):
     __tablename__ = 'blog'
 
     id = Column(Integer, primary_key=True)
