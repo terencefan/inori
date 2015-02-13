@@ -10,7 +10,7 @@ from inori.settings import (
     SECRET_KEY,
 )
 
-from inori.views import api
+from inori.views import api, main
 
 
 def not_found(error):
@@ -19,6 +19,7 @@ def not_found(error):
 
 def init_module(app):
     api.init_app(app)
+    main.init_app(app)
 
 
 def init_others(app):
