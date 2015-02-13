@@ -16,8 +16,10 @@
   ],
   "main": "inori/static/",
   "dependencies": {
+    "angular": "1.2.26",
+    "angular-loading-bar": "1.2.26",
+    "angular-route": "1.2.26",
     "bootstrap": "~3.2.0",
-    "angular": "~1.2.25",
     "jquery": "~2.1.1",
     "underscore": "~1.7.0"
   }
