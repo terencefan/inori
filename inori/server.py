@@ -1,4 +1,11 @@
-# -*- coding:utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Created At: Thu Sep 10 22:16:05 2015
+# Updated At: Thu Sep 10 22:16:05 2015
+
+__author__ = "stdrickforce"  # Tengyuan Fan
+# Email: <stdrickforce@gmail.com> <tfan@xingin.com>
 
 from flask import (
     Flask,

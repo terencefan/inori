@@ -1,4 +1,4 @@
 {
-    "directory" : "inori/static/components",
+    "directory" : "inori/static/lib",
     "json"      : "bower.json"
 }
