@@ -7,32 +7,37 @@
 __author__ = "stdrickforce"  # Tengyuan Fan
 # Email: <stdrickforce@gmail.com> <tfan@xingin.com>
 
+import importlib
+
 from flask import (
     Flask,
     render_template,
 )
 
-from inori.settings import (
+from inori.config import (
     DEBUG,
     SECRET_KEY,
 )
 
-from inori.views import api
-
-
-def not_found(error):
-    return render_template('404.html'), 404
+MODULES = ['web']
 
 
 def init_module(app):
-    api.init_app(app)
+    for module in MODULES:
+        mo = importlib.import_module('inori.apps.%s' % module)
+        mo.init_app(app)
 
 
 def init_others(app):
-    app.error_handler_spec[None][404] = not_found
+    pass
 
 
 def init_config(app):
+    app.config.update(
+        PERMANENT_SESSION_LIFETIME=60*15,
+        SESSION_REFRESH_EACH_REQUEST=True,
+        SESSION_COOKIE_HTTPONLY=True,
+    )
     app.debug = DEBUG
     app.secret_key = SECRET_KEY
 
@@ -45,5 +50,3 @@ def create_app():
     return app
 
 app = create_app()
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=1720)

@@ -8,15 +8,15 @@ help:
 requirements:
 	pip install -r requirements.txt
 
-build: requirements
-	bower install
+requirements-dev:
+	pip install -r requirements-dev.txt
 
-develop: build
+develop: requirements requirements-dev
 	python setup.py develop
 	@echo
 	@echo "Install finished"
 
-install: build
+install: requirements
 	python setup.py install --record install.record
 	@echo
 	@echo "Install finished."

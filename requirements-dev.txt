@@ -1,0 +1,5 @@
+autodoc==0.3
+autopep8==1.2
+Fabric==1.10.2
+flake8==2.4.0
+sphinx==1.3.1
