@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Created At: Thu Sep 10 22:16:05 2015
-# Updated At: Tue Sep 15 13:56:03 2015
+# Updated At: Tue Sep 15 17:08:48 2015
 
 __author__ = "stdrickforce"  # Tengyuan Fan
 # Email: <stdrickforce@gmail.com> <tfan@xingin.com>
@@ -19,6 +19,14 @@ from inori.config import (
 )
 
 MODULES = ['web']
+
+
+class InoriFlask(Flask):
+
+    @property
+    def static_folder(self):
+        print 'static folder'
+        return '/Users/stdrickforce/workspace/inori/static/'
 
 
 def init_module(app):
