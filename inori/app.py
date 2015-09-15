@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Created At: Thu Sep 10 22:16:05 2015
-# Updated At: Thu Sep 10 22:16:05 2015
+# Updated At: Tue Sep 15 13:56:03 2015
 
 __author__ = "stdrickforce"  # Tengyuan Fan
 # Email: <stdrickforce@gmail.com> <tfan@xingin.com>
@@ -11,7 +11,6 @@ import importlib
 
 from flask import (
     Flask,
-    render_template,
 )
 
 from inori.config import (
@@ -34,7 +33,7 @@ def init_others(app):
 
 def init_config(app):
     app.config.update(
-        PERMANENT_SESSION_LIFETIME=60*15,
+        PERMANENT_SESSION_LIFETIME=60 * 15,
         SESSION_REFRESH_EACH_REQUEST=True,
         SESSION_COOKIE_HTTPONLY=True,
     )

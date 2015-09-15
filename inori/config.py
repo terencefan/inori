@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Created At: Fri Aug 21 18:18:45 2015
-# Updated At: Mon Aug 31 13:39:29 2015
+# Updated At: Tue Sep 15 13:55:35 2015
 
 __author__ = "stdrickforce"  # Tengyuan Fan
 # Email: <stdrickforce@gmail.com> <tfan@xingin.com>
@@ -12,15 +12,15 @@ from os.path import (
     split,
 )
 
+PROJECT = 'inori'
+
 #: dev, prodb, prod
 ENV = 'dev'
 DEBUG = True
 SECRET_KEY = '01b9dcc46e2b4d3890b992dbafcd8ecd'
 
-# prod环境使用build文件, 其他环境使用source文件
-STATIC_PREFIX = '/static' + ('/build' if ENV == 'prod' else '/src')
-STATIC_DIR = abspath(split(__file__)[0]) + STATIC_PREFIX
-print STATIC_DIR
+STATIC_DIR = abspath(split(__file__)[0])[:-len(PROJECT)] + 'static/build'
+print 'static_dir: %s' % STATIC_DIR
 
 #: default mongodb dsn
 MONGODB_DSN = 'mongodb://localhost:27017/inori_dev'
