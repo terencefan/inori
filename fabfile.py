@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Created At: Tue Sep 15 11:11:24 2015
-# Updated At: Tue Sep 15 13:35:34 2015
+# Updated At: Tue Sep 15 14:36:54 2015
 
 __author__ = "stdrickforce"  # Tengyuan Fan
 # Email: <stdrickforce@gmail.com> <tfan@xingin.com>
@@ -12,7 +12,7 @@ from fabric.api import (
     env,
     hosts,
     local,
-    run,
+    prefix,
     sudo,
     task,
 )
@@ -45,7 +45,7 @@ def deploy():
     )
 
     # 安装python-dev
-    # sudo('apt-get install python-dev libxml2-dev libxslt-dev')
+    # sudo('apt-get install python-dev libxml2-dev libxslt-dev --fix-missing')
 
     # 安装virtualenvo
     sudo('pip install virtualenv')
@@ -56,11 +56,10 @@ def deploy():
         sudo('virtualenv %s --python=/usr/bin/python' % VENV)
 
     # 安装python packages
-    run('source /srv/virtualenvs/%s/bin/activate' % VENV)
     with cd('/srv/inori'):
-        # sudo('make install')
-        sudo('pip install -r requirements.txt')
-        sudo('python setup.py install')
+        with prefix('source /srv/virtualenvs/%s/bin/activate' % VENV):
+            sudo('pip install -r requirements.txt')
+            sudo('python setup.py install')
 
     # 其实个人项目应该也可以把nginx和supervisorctl配置写在代码库里
 

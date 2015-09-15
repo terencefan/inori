@@ -2,15 +2,10 @@
 # -*- coding: utf-8 -*-
 
 # Created At: Fri Aug 21 18:18:45 2015
-# Updated At: Tue Sep 15 13:55:35 2015
+# Updated At: Tue Sep 15 14:52:01 2015
 
 __author__ = "stdrickforce"  # Tengyuan Fan
 # Email: <stdrickforce@gmail.com> <tfan@xingin.com>
-
-from os.path import (
-    abspath,
-    split,
-)
 
 PROJECT = 'inori'
 
@@ -19,7 +14,7 @@ ENV = 'dev'
 DEBUG = True
 SECRET_KEY = '01b9dcc46e2b4d3890b992dbafcd8ecd'
 
-STATIC_DIR = abspath(split(__file__)[0])[:-len(PROJECT)] + 'static/build'
+STATIC_DIR = '/srv/inori/static/build'
 print 'static_dir: %s' % STATIC_DIR
 
 #: default mongodb dsn
