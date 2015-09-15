@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Created At: Mon Aug 24 12:01:07 2015
-# Updated At: Tue Sep 15 14:08:04 2015
+# Updated At: Tue Sep 15 14:22:51 2015
 
 __author__ = "stdrickforce"  # Tengyuan Fan
 # Email: <stdrickforce@gmail.com> <tfan@xingin.com>
@@ -45,25 +45,25 @@ class Template(object):
         return cls._templates[name]
 
 
-def view(template_name, required_login=True):
+def view(template_name, required_login=True, code=200):
 
     def wrapper(func):
         @functools.wraps(func)
         def wrap(*args, **kwargs):
-            return Template.content(template_name)
+            return Template.content(template_name), code
         return wrap
 
     return wrapper
 
 
-@view('/modules/errors/403.html')
+@view('/modules/index/403.html', code=403)
 def e403(error):
     '''
     Permission Denied.
     '''
 
 
-@view('/modules/errors/404.html')
+@view('/modules/index/404.html', code=404)
 def e404(error):
     '''
     Resource Not Found.
