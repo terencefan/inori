@@ -4,7 +4,7 @@
 # Created At: Tue Sep 15 11:11:24 2015
 # Updated At: Tue Sep 15 14:36:54 2015
 
-__author__ = "stdrickforce"  # Tengyuan Fan
+__author__ = "stdricforce"  # Tengyuan Fan
 # Email: <stdrickforce@gmail.com> <tfan@xingin.com>
 
 from fabric.api import (
