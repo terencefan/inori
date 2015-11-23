@@ -1,2 +1,67 @@
 body
-  background-color: #EEE
+  background-color: #FFF
+
+.container
+  padding: 15px
+  min-height: 600px
+
+  font-size: 13px
+
+  .info
+
+    width: 200px
+    margin: 30px auto
+    text-align: center
+
+    img
+      height: 200px
+      border-radius: 100px
+
+  .links
+    width: 727px
+    margin: auto
+    border-left: 1px solid #CCC
+    border-top: 1px solid #CCC
+
+    .link
+      background-color: #F9FFFF
+      float: left
+      position: relative
+      height: 120px
+      width: 120px
+      border-right: 1px solid #CCC
+      border-bottom: 1px solid #CCC
+      overflow: hidden
+
+      &:hover
+        .name
+          bottom: 0
+
+      .name
+        background-color: #66D
+        color: #FFF
+        position: absolute
+        bottom: -30px
+        width: 100%
+        height: 30px
+        line-height: 30px
+        text-align: center
+        transition: bottom 0.2s;
+
+      &:hover
+        cursor: pointer
+
+      img
+        height: 80px
+        width: 80px
+        margin: 20px
+
+.footer
+  font-size: 13px
+  color: #CCC
+  text-align: center
+  margin: auto
+  border-top: 1px solid #CCC
+  width: calc(100% - 30px)
+  line-height: 30px
+  height: 30px

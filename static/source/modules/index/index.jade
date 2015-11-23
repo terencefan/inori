@@ -1,13 +1,24 @@
 doctype html
 html(lang='en', "ng-app"="inori")
   head
-    script(type='text/javascript', src='/static/build/lib.js')
-    link(rel='stylesheet', href='/static/build/lib.css')
+    script(type='text/javascript', src='/static/build/lib.min.js')
+    link(rel='stylesheet', href='/static/build/lib.min.css')
     script(type='text/javascript', src='/static/build/app.js')
     link(rel='stylesheet', href='/static/build/app.css')
     script(type='text/javascript', src='/static/build/modules/index/index.js')
     link(rel='stylesheet', href='/static/build/modules/index/index.css')
   body
-    div('ng-repeat'='a in [1,2,3]')
-      h3 repeat.
-      h3 1{{a}}
+    .container(ng-controller="indexCtrl")
+
+      .info
+        img(src='{{inori.image}}')
+        h1.nickname {{inori.nickname}}
+
+      .links
+        a.link(ng-repeat='link in links', href='{{link.link}}', target="blank")
+          img(src='{{link.image}}')
+          .name {{link.name}}
+        div('style'='clear:both')
+
+    .footer
+      span @ 2015 stdrickforce Inori Terence
