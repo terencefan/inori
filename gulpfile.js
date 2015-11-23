@@ -81,6 +81,8 @@ gulp.task('build-app', function() {
 
 gulp.task('develop', ['build-lib', 'build-source', 'build-app']);
 
+gulp.task('deploy', ['build-lib', 'build-source', 'build-app']);
+
 gulp.task('dev', ['develop'], function() {
   reload.listen();
   gulp.watch(['static/source/**/*.haml'], ['build-haml']);

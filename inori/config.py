@@ -12,12 +12,13 @@ import os
 PROJECT = 'inori'
 
 #: dev, prodb, prod
-ENV = 'dev'
+ENV = os.getenv('ENV', 'prod')
 DEBUG = True
 SECRET_KEY = '01b9dcc46e2b4d3890b992dbafcd8ecd'
 
 STATIC_DIR = '/'.join(os.path.dirname(__file__).split('/')[:-1] + ['static'])
-print STATIC_DIR
+if ENV == 'prod':
+    STATIC_DIR = '/srv/inori/static'
 
 #: default mongodb dsn
 MONGODB_DSN = 'mongodb://localhost:27017/inori_dev'

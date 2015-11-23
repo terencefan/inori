@@ -40,7 +40,7 @@ class Template(object):
         if ENV != 'dev' and name in cls._templates:
             return cls._templates[name]
 
-        filepath = '%s/build/%s' % (STATIC_DIR, name)
+        filepath = '%s/build%s' % (STATIC_DIR, name)
         with open(filepath) as f:
             cls._templates[name] = render_template_string(
                 f.read().decode('utf-8'))
@@ -73,7 +73,7 @@ def e404(error):
 
 
 MODULES = [
-    ('/index', '/modules/index/index.html'),
+    ('/', '/modules/index/index.html'),
 ]
 
 
@@ -83,9 +83,9 @@ def init_app(app):
         route, path = module
         bp.add_url_rule(route, view_func=view(path)(lambda: ''))
 
-    app.register_blueprint(bp, url_prefix='/web')
-    app.errorhandler(403)(e403)
-    app.errorhandler(404)(e404)
+    app.register_blueprint(bp, url_prefix='')
+    # app.errorhandler(403)(e403)
+    # app.errorhandler(404)(e404)
 
 
 @bp.before_request

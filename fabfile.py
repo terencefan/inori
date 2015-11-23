@@ -17,6 +17,7 @@ from fabric.api import (
     task,
 )
 
+from fabric.contrib.files import exists
 from fabric.contrib.project import rsync_project
 
 env.sudo_prefix = "sudo su -c"
@@ -30,9 +31,6 @@ VENV = 'inorienv'
 def deploy():
     '''
     '''
-
-    # 下载前端依赖的libs
-    local('bower install')
 
     # 构建前端文件
     local('gulp deploy')
@@ -53,7 +51,8 @@ def deploy():
     # 生成virtualenv
     sudo('mkdir -p /srv/virtualenvs/')
     with cd('/srv/virtualenvs/'):
-        sudo('virtualenv %s --python=/usr/bin/python' % VENV)
+        if not exists('/srv/virtualenvs/inorienv', use_sudo=True):
+            sudo('virtualenv %s --python=/usr/bin/python' % VENV)
 
     # 安装python packages
     with cd('/srv/inori'):
