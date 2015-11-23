@@ -39,7 +39,9 @@ class Template(object):
         '''
         if ENV != 'dev' and name in cls._templates:
             return cls._templates[name]
-        with open(STATIC_DIR + name) as f:
+
+        filepath = '%s/build/%s' % (STATIC_DIR, name)
+        with open(filepath) as f:
             cls._templates[name] = render_template_string(
                 f.read().decode('utf-8'))
         return cls._templates[name]

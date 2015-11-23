@@ -7,6 +7,8 @@
 __author__ = "stdrickforce"  # Tengyuan Fan
 # Email: <stdrickforce@gmail.com> <tfan@xingin.com>
 
+import os
+
 PROJECT = 'inori'
 
 #: dev, prodb, prod
@@ -14,17 +16,14 @@ ENV = 'dev'
 DEBUG = True
 SECRET_KEY = '01b9dcc46e2b4d3890b992dbafcd8ecd'
 
-STATIC_DIR = '/srv/inori/static/build'
-print 'static_dir: %s' % STATIC_DIR
+STATIC_DIR = '/'.join(os.path.dirname(__file__).split('/')[:-1] + ['static'])
+print STATIC_DIR
 
 #: default mongodb dsn
 MONGODB_DSN = 'mongodb://localhost:27017/inori_dev'
 
 #: default redis dsn
 REDIS_DSN = 'redis://localhost:6379'
-
-#: default celery broker
-CELERY_BROKER = 'amqp://admin:admin@localhost:5672/inori'
 
 #: default log settings
 LOGGING_SETTINGS = {

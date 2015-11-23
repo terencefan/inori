@@ -22,11 +22,7 @@ MODULES = ['web']
 
 
 class InoriFlask(Flask):
-
-    @property
-    def static_folder(self):
-        print 'static folder'
-        return '/Users/stdrickforce/workspace/inori/static/'
+    pass
 
 
 def init_module(app):

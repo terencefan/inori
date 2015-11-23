@@ -1,7 +1,7 @@
 // 引用gulp包
 var gulp    = require('gulp');
 var concat  = require('gulp-concat');
-var haml    = require('gulp-haml');
+var jade = require('gulp-jade');
 var babel   = require('gulp-babel');
 var sass    = require('gulp-sass');
 var reload  = require('gulp-livereload');
@@ -11,8 +11,6 @@ var zipcss  = require('gulp-minify-css');
 
 gulp.task('build-libcss', ['build-source'], function() {
   var libCssList = [
-    'static/lib/bootstrap/dist/css/bootstrap.css',
-    'static/lib/bootstrap/dist/css/bootstrap-theme.css',
   ];
   gulp.src(libCssList)
     .pipe(concat('lib.css'))
@@ -24,10 +22,6 @@ gulp.task('build-libcss', ['build-source'], function() {
 
 gulp.task('build-libjs', ['build-source'], function() {
   var libJsList = [
-    'static/lib/angular/angular.js',
-    'static/lib/jquery/dist/jquery.js',
-    'static/lib/lodash/lodash.js',
-    'static/lib/bootstrap/dist/js/bootstrap.js',
   ];
   gulp.src(libJsList)
     .pipe(concat('lib.js'))
@@ -37,38 +31,35 @@ gulp.task('build-libjs', ['build-source'], function() {
     .pipe(gulp.dest('static/build'));
 });
 
-gulp.task('build-libfont', function() {
-  gulp.src(['static/lib/bootstrap/fonts/*'])
-    .pipe(gulp.dest('static/fonts'));
+gulp.task('build-libreq', function() {
 });
 
-gulp.task('build-lib', ['build-libcss', 'build-libjs', 'build-libfont'], function() {
+gulp.task('build-lib', ['build-libcss', 'build-libjs', 'build-libreq'], function() {
 
 });
 
-gulp.task('build-haml', function() {
-  gulp.src('static/source/**/*.haml')
-    .pipe(haml({compiler: 'visionmedia'}))
-    .pipe(haml())
+gulp.task('build-html', function() {
+  gulp.src('static/source/**/*.jade')
+    .pipe(jade())
     .pipe(gulp.dest('static/build'))
     .pipe(reload());
 });
 
-gulp.task('build-es6', function() {
+gulp.task('build-js', function() {
   gulp.src('static/source/**/*.es6')
     .pipe(babel())
     .pipe(gulp.dest('static/build'))
     .pipe(reload());
 });
 
-gulp.task('build-sass', function() {
+gulp.task('build-css', function() {
   gulp.src('static/source/**/*.sass')
     .pipe(sass())
     .pipe(gulp.dest('static/build'))
     .pipe(reload());
 });
 
-gulp.task('build-source', ['build-haml', 'build-es6', 'build-sass'], function() {
+gulp.task('build-source', ['build-html', 'build-js', 'build-css'], function() {
 });
 
 gulp.task('build-app', function() {
@@ -88,17 +79,13 @@ gulp.task('build-app', function() {
     .pipe(gulp.dest('static/build'));
 });
 
-gulp.task('build-all', ['build-lib', 'build-source', 'build-app']);
+gulp.task('develop', ['build-lib', 'build-source', 'build-app']);
 
-gulp.task('dev', ['build-all'], function() {
+gulp.task('dev', ['develop'], function() {
   reload.listen();
   gulp.watch(['static/source/**/*.haml'], ['build-haml']);
   gulp.watch(['static/source/**/*.es6'], ['build-es6']);
   gulp.watch(['static/source/**/*.sass'], ['build-sass']);
   gulp.watch(['static/source/app/**/*.es6'], ['build-app']);
   gulp.watch(['static/source/app/**/*.sass'], ['build-app']);
-});
-
-gulp.task('deploy', ['build-all'], function() {
-
 });
