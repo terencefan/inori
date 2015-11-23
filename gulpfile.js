@@ -22,6 +22,7 @@ gulp.task('build-libcss', ['build-source'], function() {
 
 gulp.task('build-libjs', ['build-source'], function() {
   var libJsList = [
+    'node_modules/angular/angular.js',
   ];
   gulp.src(libJsList)
     .pipe(concat('lib.js'))

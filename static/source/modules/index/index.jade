@@ -1,10 +1,13 @@
 doctype html
-html(lang='en')
+html(lang='en', "ng-app"="inori")
   head
-    script(type='text/javascript', src='/static/build/app/app.js')
-    link(rel='stylesheet', href='/static/build/app/app.css')
+    script(type='text/javascript', src='/static/build/lib.js')
+    link(rel='stylesheet', href='/static/build/lib.css')
+    script(type='text/javascript', src='/static/build/app.js')
+    link(rel='stylesheet', href='/static/build/app.css')
     script(type='text/javascript', src='/static/build/modules/index/index.js')
     link(rel='stylesheet', href='/static/build/modules/index/index.css')
   body
-    h1 hello inori!
-    h2 hello inori!
+    div('ng-repeat'='a in [1,2,3]')
+      h3 repeat.
+      h3 1{{a}}

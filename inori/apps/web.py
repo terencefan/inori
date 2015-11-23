@@ -11,7 +11,6 @@ import functools
 
 from flask import (
     Blueprint,
-    render_template_string,
 )
 
 from inori.config import (
@@ -42,8 +41,8 @@ class Template(object):
 
         filepath = '%s/build%s' % (STATIC_DIR, name)
         with open(filepath) as f:
-            cls._templates[name] = render_template_string(
-                f.read().decode('utf-8'))
+            template = f.read().decode('utf-8')
+            cls._templates[name] = template
         return cls._templates[name]
 
 

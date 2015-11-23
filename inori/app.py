@@ -23,7 +23,11 @@ MODULES = ['web']
 
 
 class InoriFlask(Flask):
-    pass
+    jinja_options = Flask.jinja_options.copy()
+    jinja_options.update({
+        'variable_start_string': '{%',
+        'variable_end_string': ' %}',
+    })
 
 
 def init_module(app):
