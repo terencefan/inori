@@ -16,6 +16,7 @@ from flask import (
 from inori.config import (
     DEBUG,
     SECRET_KEY,
+    STATIC_DIR,
 )
 
 MODULES = ['web']
@@ -46,7 +47,7 @@ def init_config(app):
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder=STATIC_DIR)
     init_config(app)
     init_others(app)
     init_module(app)

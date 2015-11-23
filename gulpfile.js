@@ -85,9 +85,9 @@ gulp.task('deploy', ['build-lib', 'build-source', 'build-app']);
 
 gulp.task('dev', ['develop'], function() {
   reload.listen();
-  gulp.watch(['static/source/**/*.haml'], ['build-haml']);
-  gulp.watch(['static/source/**/*.es6'], ['build-es6']);
-  gulp.watch(['static/source/**/*.sass'], ['build-sass']);
+  gulp.watch(['static/source/**/*.jade'], ['build-html']);
+  gulp.watch(['static/source/**/*.es6'], ['build-js']);
+  gulp.watch(['static/source/**/*.sass'], ['build-css']);
   gulp.watch(['static/source/app/**/*.es6'], ['build-app']);
   gulp.watch(['static/source/app/**/*.sass'], ['build-app']);
 });
