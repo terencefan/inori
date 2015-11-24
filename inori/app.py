@@ -19,7 +19,7 @@ from inori.config import (
     STATIC_DIR,
 )
 
-MODULES = ['web']
+MODULES = ['web', 'api']
 
 
 class InoriFlask(Flask):

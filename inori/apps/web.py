@@ -83,8 +83,8 @@ def init_app(app):
         bp.add_url_rule(route, view_func=view(path)(lambda: ''))
 
     app.register_blueprint(bp, url_prefix='')
-    # app.errorhandler(403)(e403)
-    # app.errorhandler(404)(e404)
+    app.errorhandler(403)(e403)
+    app.errorhandler(404)(e404)
 
 
 @bp.before_request

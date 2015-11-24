@@ -20,11 +20,14 @@ STATIC_DIR = '/'.join(os.path.dirname(__file__).split('/')[:-1] + ['static'])
 if ENV == 'prod':
     STATIC_DIR = '/srv/inori/static'
 
-#: default mongodb dsn
-MONGODB_DSN = 'mongodb://localhost:27017/inori_dev'
-
 #: default redis dsn
 REDIS_DSN = 'redis://localhost:6379'
+
+MONGO_SETTINGS = {
+    'db': 'inori',
+    'host': '127.0.0.1',
+    'port': 27017,
+}
 
 #: default log settings
 LOGGING_SETTINGS = {
