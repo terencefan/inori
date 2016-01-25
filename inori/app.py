@@ -9,8 +9,6 @@ __author__ = "stdrickforce"  # Tengyuan Fan
 
 import importlib
 
-from myProfiler import Profiler
-
 from flask import (
     Flask,
 )
@@ -57,7 +55,6 @@ def create_app():
     init_config(app)
     init_others(app)
     init_module(app)
-    app = Profiler(app)
     return app
 
 app = create_app()

@@ -13,19 +13,20 @@ PROJECT = 'inori'
 
 #: dev, prodb, prod
 ENV = os.getenv('ENV', 'prod')
+print ENV
 DEBUG = True
 SECRET_KEY = '01b9dcc46e2b4d3890b992dbafcd8ecd'
 
 STATIC_DIR = '/'.join(os.path.dirname(__file__).split('/')[:-1] + ['static'])
-if ENV == 'prod':
-    STATIC_DIR = '/srv/inori/static'
+# if ENV == 'prod':
+#     STATIC_DIR = '/srv/inori/static'
 
 #: default redis dsn
 REDIS_DSN = 'redis://localhost:6379'
 
 MONGO_SETTINGS = {
     'db': 'inori',
-    'host': '127.0.0.1',
+    'host': 'inori-1',
     'port': 27017,
 }
 
