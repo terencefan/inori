@@ -7,26 +7,15 @@ function indexCtrl($scope) {
 
   $scope.links = [
     {
-      'name': 'Github',
-      'link': 'https://github.com/stdrickforce',
-      'image': '/static/source/images/logo/github.png',
-    },
-    {
-      'name': 'wow',
-      'link': 'http://www.battlenet.com.cn/wow/zh/character/%E6%96%AF%E5%9D%A6%E7%B4%A2%E5%A7%86/%E9%A3%8E%E4%B9%8B%E5%B0%8F%E7%A5%88/advanced',
-      'image': '/static/source/images/logo/wow.png',
-    },
-    {
-      'name': '微博',
-      'link': 'http://weibo.com/3752876962/profile?topnav=1&wvr=6',
-      'image': '/static/source/images/logo/weibo.jpg',
-    },
-    {
-      'name': '知乎',
-      'link': 'http://www.zhihu.com/people/fan-teng-yuan',
-      'image': '/static/source/images/logo/zhihu.jpg',
+      'title': "Python 魔术方法指南 — PyCoder's Weelky CN",
+      'icon': 'http://pycoders-weekly-chinese.readthedocs.org/favicon.ico',
+      'url': 'http://pycoders-weekly-chinese.readthedocs.org/en/latest/issue6/a-guide-to-pythons-magic-methods.html',
     },
   ];
+
+  $scope.addLink = function() {
+    console.log($scope.url);
+  };
 
 }
 

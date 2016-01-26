@@ -16,10 +16,8 @@ from inori.models import (
 
 class Link(Document, TimeMixin):
 
-    name = StringField(required=True)
-    href = StringField(required=True)
-    image = StringField(required=True)
+    title = StringField(required=True)
+    abstract = StringField(default='')
 
-    @property
-    def image_url(self):
-        pass
+    url = StringField(required=True)
+    icon = StringField(required=True)

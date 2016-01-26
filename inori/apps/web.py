@@ -15,7 +15,7 @@ from flask import (
 
 from inori.config import (
     STATIC_DIR,
-    ENV,
+    # ENV,
 )
 
 from inori.exc import (
@@ -36,8 +36,8 @@ class Template(object):
         lazy load html content.
         always load from disk on dev env.
         '''
-        if ENV != 'dev' and name in cls._templates:
-            return cls._templates[name]
+        # if ENV != 'dev' and name in cls._templates:
+        #     return cls._templates[name]
 
         filepath = '%s/build%s' % (STATIC_DIR, name)
         with open(filepath) as f:

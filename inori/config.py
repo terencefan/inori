@@ -13,7 +13,6 @@ PROJECT = 'inori'
 
 #: dev, prodb, prod
 ENV = os.getenv('ENV', 'prod')
-print ENV
 DEBUG = True
 SECRET_KEY = '01b9dcc46e2b4d3890b992dbafcd8ecd'
 
@@ -26,7 +25,7 @@ REDIS_DSN = 'redis://localhost:6379'
 
 MONGO_SETTINGS = {
     'db': 'inori',
-    'host': 'inori-1',
+    'host': '52.69.235.67',
     'port': 27017,
 }
 

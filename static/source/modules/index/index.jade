@@ -16,10 +16,14 @@ html(lang='en', "ng-app"="inori")
         h1.nickname {{inori.nickname}}
 
       .links
-        a.link(ng-repeat='link in links', href='{{link.link}}', target="blank")
-          img(src='{{link.image}}')
-          .name {{link.name}}
-        div('style'='clear:both')
+
+        form.link.add(ng-submit='addLink()')
+          input(placeholder="输入链接地址以收藏链接", ng-model='url')
+
+        .link(ng-repeat='link in links')
+          img.icon(src='{{link.icon}}')
+          .title(href='{{link.url}}', target='blank') {{link.title}}
+          .time 17:32
 
     .footer
       span @ 2015 stdrickforce Inori Terence

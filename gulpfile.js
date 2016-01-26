@@ -11,6 +11,8 @@ var zipcss  = require('gulp-minify-css');
 
 gulp.task('build-libcss', ['build-source'], function() {
   var libCssList = [
+    'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css',
+    'node_modules/bootstrap/dist/css/bootstrap.css',
   ];
   gulp.src(libCssList)
     .pipe(concat('lib.css'))
@@ -23,6 +25,7 @@ gulp.task('build-libcss', ['build-source'], function() {
 gulp.task('build-libjs', ['build-source'], function() {
   var libJsList = [
     'node_modules/angular/angular.js',
+    'node_modules/angular-animate/angular-animate.min.js',
   ];
   gulp.src(libJsList)
     .pipe(concat('lib.js'))
