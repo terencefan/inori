@@ -7,21 +7,44 @@ __author__ = "stdrickforce"  # Tengyuan Fan
 import requests
 import urlparse
 
-from scrapy.selector import Selector
+from flask import (
+    jsonify,
+    request,
+)
 
-from inori.apps.api import bp
+from scrapy.selector import Selector
 
 from inori.models import Link
 
+from inori.utils import datetime2utc
 
-@bp.route('/link')
+
 def query():
-    return {
-        'links': [1, 2],
-    }
+
+    def _links(links):
+        for link in links:
+            yield {
+                'id': str(link.id),
+                'title': link.title,
+                'url': link.url,
+                'icon': link.icon,
+                'created_at': datetime2utc(link.created_at),
+            }
+
+    links = Link.objects().order_by('-created_at')
+
+    return jsonify({
+        'data': {
+            'links': list(_links(links)),
+        },
+        'msg': 'success',
+        'code': 200,
+    })
 
 
-def fetch(url):
+def add():
+
+    url = request.json.get('url', '')
 
     parse = urlparse.urlparse(url)
 
@@ -36,8 +59,3 @@ def fetch(url):
         icon='http://{}/favicon.ico'.format(parse.hostname),
     )
     link.save()
-
-
-if __name__ == '__main__':
-    url = 'http://pycoders-weekly-chinese.readthedocs.org/en/latest/issue6/a-guide-to-pythons-magic-methods.html'  # noqa
-    fetch(url)

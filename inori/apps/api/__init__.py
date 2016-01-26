@@ -20,6 +20,7 @@ bp = Blueprint('api', __name__)
 modules = {
     'link': [
         ('query', ['GET'], '/'),
+        ('add', ['PUT'], '/'),
     ],
 }
 
@@ -65,4 +66,4 @@ def before_request_hook():
 
 @bp.after_request
 def after_request_hook(response):
-    print 'after request hook'
+    return response

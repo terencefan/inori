@@ -17,13 +17,13 @@ html(lang='en', "ng-app"="inori")
 
       .links
 
-        form.link.add(ng-submit='addLink()')
-          input(placeholder="输入链接地址以收藏链接", ng-model='url')
+        form.link.add(ng-submit='link.add()')
+          input(placeholder="输入链接地址以收藏链接", ng-model='link.url')
 
-        .link(ng-repeat='link in links')
-          img.icon(src='{{link.icon}}')
-          .title(href='{{link.url}}', target='blank') {{link.title}}
-          .time 17:32
+        .link(ng-repeat='i in links')
+          img.icon(src='{{i.icon}}')
+          a.title(href='{{i.url}}', target='blank') {{i.title}}
+          .time {{i.created_at | date: 'HH:mm'}}
 
     .footer
       span @ 2015 stdrickforce Inori Terence
