@@ -15,15 +15,19 @@ html(lang='en', "ng-app"="inori")
         img(src='{{inori.image}}')
         h1.nickname {{inori.nickname}}
 
-      .links
+      .trends
 
         form.link.add(ng-submit='link.add()')
           input(placeholder="输入链接地址以收藏链接", ng-model='link.url')
 
-        .link(ng-repeat='i in links')
-          img.icon(src='{{i.icon}}')
-          a.title(href='{{i.url}}', target='blank') {{i.title}}
-          .time {{i.created_at | date: 'HH:mm'}}
+        .group(ng-repeat='group in groups')
+
+          .date {{group.date}}
+
+          .link(ng-repeat='i in group.items')
+            img.icon(src='{{i.icon}}')
+            a.title(href='{{i.url}}', target='blank') {{i.title}}
+            .time {{i.created_at | date: 'HH:mm'}}
 
     .footer
       span @ 2015 stdrickforce Inori Terence

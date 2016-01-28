@@ -33,13 +33,9 @@ def query():
 
     links = Link.objects().order_by('-created_at')
 
-    return jsonify({
-        'data': {
-            'links': list(_links(links)),
-        },
-        'msg': 'success',
-        'code': 200,
-    })
+    return {
+        'links': list(_links(links)),
+    }
 
 
 def add():

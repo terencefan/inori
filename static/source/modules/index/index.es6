@@ -1,8 +1,8 @@
 
 function indexSvc($http) {
   return {
-    linkList: function() {
-      return $http.get('/api/link');
+    trends: function() {
+      return $http.get('/api/trend');
     },
     addLink: function(url) {
       let data = {'url': url};
@@ -19,8 +19,8 @@ function indexCtrl($scope, indexSvc) {
   };
 
   function reload() {
-    indexSvc.linkList().success(function(data) {
-      $scope.links = data.data.links;
+    indexSvc.trends().success(function(data) {
+      $scope.groups = data.data.groups;
     });
   }
   reload();

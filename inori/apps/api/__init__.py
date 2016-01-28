@@ -19,8 +19,10 @@ bp = Blueprint('api', __name__)
 
 modules = {
     'link': [
-        ('query', ['GET'], '/'),
         ('add', ['PUT'], '/'),
+    ],
+    'trend': [
+        ('query', ['GET'], '/'),
     ],
 }
 
@@ -54,7 +56,8 @@ def init_app(app):
             route = '/' + module_name + path
             func = getattr(module, name)
             func_name = u'%s_%s' % (module_name, name)
-            bp.add_url_rule(route, func_name, func, methods=methods)
+            bp.add_url_rule(
+                route, func_name, render_json(func), methods=methods)
 
     app.register_blueprint(bp, url_prefix='/api')
 

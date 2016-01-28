@@ -13,6 +13,8 @@ from inori.models import (
     TimeMixin,
 )
 
+from inori.utils import datetime2utc
+
 
 class Link(Document, TimeMixin):
 
@@ -21,3 +23,12 @@ class Link(Document, TimeMixin):
 
     url = StringField(required=True)
     icon = StringField(required=True)
+
+    def serialize(self):
+        return {
+            'id': str(self.id),
+            'title': self.title,
+            'url': self.url,
+            'icon': self.icon,
+            'created_at': datetime2utc(self.created_at),
+        }
